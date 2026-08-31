@@ -1,0 +1,39 @@
+{
+  "formCode": "PRBS",
+  "formName": "Possible Representation of More Than One Buyer or Seller — Disclosure and Consent",
+  "data": {
+    "property_address": null,
+    "date": "2026-02-26",
+    "parties": {
+      "buyer_names": ["Varun Srivastava", "Jeannette Gonzalez", "Esteban Roberto Xala Flores"],
+      "seller_names": []
+    },
+    "agent": {
+      "name": "Ashok Patil",
+      "dre_license": "02055556",
+      "brokerage_name": "Blue Lotus Reality",
+      "brokerage_dre": "02247722",
+      "role": "Selling Agent"
+    },
+    "disclosure": {
+      "agent_represents_more_than_one_buyer": true,
+      "agent_represents_more_than_one_seller": false,
+      "description_of_other_parties": null
+    },
+    "consent": {
+      "buyer_consents": true,
+      "seller_consents": true
+    },
+    "signatures": {
+      "buyer_1_signed": true,
+      "buyer_1_signature_date": "2026-02-26",
+      "buyer_2_signed": true,
+      "buyer_2_signature_date": "2026-03-06",
+      "seller_1_signed": true,
+      "seller_1_signature_date": "2026-03-06",
+      "seller_2_signed": true,
+      "seller_2_signature_date": "2026-03-06"
+    },
+    "extractionWarnings": []
+  }
+}

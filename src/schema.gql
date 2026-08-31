@@ -1,0 +1,936 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AccountEntity {
+  addressLine1: String
+  addressLine2: String
+  avatarUrl: String
+  cellPhone: String
+  city: String
+  country: String
+  createdAt: DateTime!
+  displayName: String!
+  firstName: String
+  id: ID!
+  lastName: String
+  locale: String
+  memberships: [OrganizationMembershipEntity!]
+  officePhone: String
+  organizationName: String
+  state: String
+  status: String!
+  timezone: String
+  updatedAt: DateTime!
+  user: UserEntity!
+  zipCode: String
+}
+
+type AiInteractionEntity {
+  actorAccount: AccountEntity
+  completionTokens: Int
+  costUsd: Float
+  createdAt: DateTime!
+  errorMessage: String
+  feature: String!
+  id: ID!
+  modelName: String!
+  promptTokens: Int
+  responseText: String
+  status: AiInteractionStatus!
+  transaction: TransactionEntity
+}
+
+enum AiInteractionStatus {
+  FAILED
+  MODERATED
+  SUCCESS
+}
+
+type ContactEntity {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  companyName: String
+  contactType: ContactType!
+  createdAt: DateTime!
+  email: String
+  firstName: String
+  id: ID!
+  lastName: String
+  notes: String
+  phone: String
+  postalCode: String
+  secondaryPhone: String
+  state: String
+  updatedAt: DateTime!
+}
+
+enum ContactType {
+  COMPANY
+  PERSON
+}
+
+input CreateAccountInput {
+  addressLine1: String
+  addressLine2: String
+  cellPhone: String
+  city: String
+  country: String
+  displayName: String!
+  firstName: String
+  lastName: String
+  locale: String
+  officePhone: String
+  organizationName: String
+  state: String
+  timezone: String
+  userId: String!
+  zipCode: String
+}
+
+input CreateAiInteractionInput {
+  actorAccountId: String
+  completionTokens: Int
+  costUsd: Float
+  errorMessage: String
+  feature: String!
+  modelName: String!
+  promptText: String!
+  promptTokens: Int
+  responseText: String
+  status: AiInteractionStatus
+  transactionId: String
+}
+
+input CreateContactInput {
+  addressLine1: String
+  city: String
+  companyName: String
+  contactType: ContactType!
+  email: String
+  firstName: String
+  lastName: String
+  phone: String
+  postalCode: String
+  state: String
+}
+
+input CreateMembershipInput {
+  accountId: String!
+  isPrimary: Boolean
+  organizationId: String!
+  role: MemberRole!
+}
+
+input CreateOrganizationInput {
+  addressLine1: String
+  city: String
+  licenseNumber: String
+  name: String!
+  phone: String
+  state: String
+  type: OrgType!
+}
+
+input CreateTransactionDocumentInput {
+  documentType: String!
+  dueAt: String
+  fileName: String
+  mimeType: String
+  requestedFromPartyId: String
+  status: DocumentStatus!
+  storageKey: String
+  storageUrl: String
+  submissionId: String
+  title: String!
+  transactionId: String!
+  uploadedByAccountId: String
+}
+
+input CreateTransactionEventInput {
+  createdByAccountId: String
+  eventDate: String!
+  eventType: EventType!
+  notes: String
+  transactionId: String!
+}
+
+input CreateTransactionInput {
+  contractPrice: Float
+  createdByAccountId: String!
+  listPrice: Float
+  organizationId: String!
+  propertyAddressLine1: String!
+  propertyCity: String!
+  propertyState: String!
+  side: TransactionSide!
+  transactionNumber: String!
+  transactionType: TransactionType!
+}
+
+input CreateTransactionJournalInput {
+  actorAccountId: String
+  body: String
+  eventAt: String!
+  journalType: JournalType!
+  source: JournalSource!
+  title: String!
+  transactionId: String!
+}
+
+input CreateTransactionMessageInput {
+  bodyText: String
+  channel: MessageChannel!
+  direction: MessageDirection!
+  metadataJson: String
+  providerMessageId: String
+  providerName: String
+  providerThreadId: String
+  receivedAt: String
+  recipientPartyId: String
+  senderPartyId: String
+  sentAt: String
+  stage: String
+  subject: String
+  threadKey: String
+  transactionId: String!
+}
+
+input CreateTransactionPartyInput {
+  contactId: String
+  displayName: String!
+  email: String
+  isPrimary: Boolean
+  organizationId: String
+  partyRole: PartyRole!
+  phone: String
+  transactionId: String!
+}
+
+input CreateTransactionTaskInput {
+  assignedAccountId: String
+  createdByAccountId: String
+  dependsOnTaskId: String
+  description: String
+  dueAt: String
+  priority: TaskPriority
+  status: TaskStatus
+  title: String!
+  transactionId: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  phone: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum DocumentStatus {
+  APPROVED
+  EXPIRED
+  REJECTED
+  REQUESTED
+  SIGNED
+  SUPERSEDED
+  UNDER_REVIEW
+  UPLOADED
+}
+
+enum EventStatus {
+  CANCELLED
+  COMPLETED
+  MISSED
+  RESCHEDULED
+  SCHEDULED
+}
+
+enum EventType {
+  APPRAISAL
+  CLOSING
+  CONTINGENCY_DEADLINE
+  DISCLOSURES_DUE
+  FINAL_WALKTHROUGH
+  INSPECTION
+  LOAN_COMMITMENT
+  OFFER_ACCEPTED
+  OPEN_ESCROW
+  POSSESSION
+  POST_CLOSE_FOLLOWUP
+}
+
+enum JournalSource {
+  AI
+  EMAIL
+  IMPORT
+  SMS
+  SYSTEM
+  UI
+  WEBHOOK
+}
+
+enum JournalType {
+  AI_ACTION
+  AI_SUMMARY
+  DEADLINE_UPDATED
+  DOCUMENT_REJECTED
+  DOCUMENT_SIGNED
+  DOCUMENT_UPLOADED
+  EMAIL_RECEIVED
+  EMAIL_REPLIED
+  EMAIL_SENT
+  NOTE
+  SMS_RECEIVED
+  SMS_SENT
+  STAGE_CHANGE
+  STATUS_CHANGE
+  SYSTEM_EVENT
+  TASK_COMPLETED
+  TASK_CREATED
+}
+
+enum MemberAccessScope {
+  ALL_TRANSACTIONS
+  ASSIGNED_ONLY
+}
+
+enum MemberRole {
+  AGENT
+  BROKER_ADMIN
+  TRANSACTION_COORDINATOR
+}
+
+enum MembershipStatus {
+  ACTIVE
+  PENDING
+  REJECTED
+}
+
+enum MessageChannel {
+  AI_CHAT
+  EMAIL
+  IN_APP
+  SMS
+}
+
+enum MessageDirection {
+  INBOUND
+  INTERNAL
+  OUTBOUND
+}
+
+enum MessageStatus {
+  DELIVERED
+  FAILED
+  QUEUED
+  READ
+  RECEIVED
+  SENT
+}
+
+type Mutation {
+  completeTask(id: String!): TransactionTaskEntity!
+  createAccount(input: CreateAccountInput!): AccountEntity!
+  createAiInteraction(input: CreateAiInteractionInput!): AiInteractionEntity!
+  createContact(input: CreateContactInput!): ContactEntity!
+  createDocument(input: CreateTransactionDocumentInput!): TransactionDocumentEntity!
+  createJournalEntry(input: CreateTransactionJournalInput!): TransactionJournalEntity!
+  createMembership(input: CreateMembershipInput!): OrganizationMembershipEntity!
+  createMessage(input: CreateTransactionMessageInput!): TransactionMessageEntity!
+  createOrganization(input: CreateOrganizationInput!): OrganizationEntity!
+  createTask(input: CreateTransactionTaskInput!): TransactionTaskEntity!
+  createTransaction(input: CreateTransactionInput!): TransactionEntity!
+  createTransactionEvent(input: CreateTransactionEventInput!): TransactionEventEntity!
+  createTransactionParty(input: CreateTransactionPartyInput!): TransactionPartyEntity!
+  createUser(input: CreateUserInput!): UserEntity!
+  removeContact(id: String!): Boolean!
+  removeMembership(id: String!): Boolean!
+  removeOrganization(id: String!): Boolean!
+  removeTask(id: String!): Boolean!
+  removeTransactionEvent(id: String!): Boolean!
+  removeTransactionParty(id: String!): Boolean!
+  removeUser(id: String!): Boolean!
+  updateAccount(id: String!, input: UpdateAccountInput!): AccountEntity!
+  updateContact(id: String!, input: UpdateContactInput!): ContactEntity!
+  updateDocument(id: String!, input: UpdateDocumentInput!): TransactionDocumentEntity!
+  updateDocumentStatus(id: String!, status: DocumentStatus!): TransactionDocumentEntity!
+  updateMessageStatus(id: String!, status: MessageStatus!): TransactionMessageEntity!
+  updateOrganization(id: String!, input: UpdateOrganizationInput!): OrganizationEntity!
+  updateTask(id: String!, input: UpdateTransactionTaskInput!): TransactionTaskEntity!
+  updateTransaction(id: String!, input: UpdateTransactionInput!): TransactionEntity!
+  updateTransactionEvent(id: String!, input: UpdateTransactionEventInput!): TransactionEventEntity!
+  updateTransactionParty(id: String!, input: UpdateTransactionPartyInput!): TransactionPartyEntity!
+  updateTransactionStatus(id: String!, status: TransactionStatus!): TransactionEntity!
+  updateUser(id: String!, input: UpdateUserInput!): UserEntity!
+}
+
+enum OrgStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_APPROVAL
+  SUSPENDED
+}
+
+enum OrgType {
+  BROKERAGE
+  ESCROW_COMPANY
+  LAW_FIRM
+  LENDER
+  TEAM
+  TITLE_COMPANY
+  TRANSACTION_COORDINATION_CO
+}
+
+type OrganizationEntity {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: String
+  createdAt: DateTime!
+  emailDomain: String
+  id: ID!
+  licenseNumber: String
+  memberships: [OrganizationMembershipEntity!]
+  name: String!
+  phone: String
+  postalCode: String
+  state: String
+  status: OrgStatus!
+  transactions: [TransactionEntity!]
+  type: OrgType!
+  updatedAt: DateTime!
+}
+
+type OrganizationMembershipEntity {
+  accessScope: MemberAccessScope!
+  account: AccountEntity!
+  createdAt: DateTime!
+  id: ID!
+  isPrimary: Boolean!
+  joinedAt: DateTime
+  organization: OrganizationEntity!
+  role: MemberRole!
+  status: MembershipStatus!
+  updatedAt: DateTime!
+}
+
+enum PartyRole {
+  APPRAISER
+  ATTORNEY
+  BUYER
+  BUYER_AGENT
+  BUYER_AGENT_REPRESENTATIVE
+  BUYER_TRANSACTION_COORDINATOR
+  ESCROW_OFFICER
+  INSPECTOR
+  LENDER
+  LOAN_OFFICER
+  OTHER
+  SELLER
+  SELLER_AGENT
+  SELLER_AGENT_REPRESENTATIVE
+  SELLER_TRANSACTION_COORDINATOR
+  TITLE_OFFICER
+}
+
+type Query {
+  account(id: String!): AccountEntity!
+  accountByUserId(userId: String!): AccountEntity
+  accounts: [AccountEntity!]!
+  aiInteraction(id: String!): AiInteractionEntity!
+  aiInteractionsByTransaction(transactionId: String!): [AiInteractionEntity!]!
+  contact(id: String!): ContactEntity!
+  contacts: [ContactEntity!]!
+  documentsByTransaction(transactionId: String!): [TransactionDocumentEntity!]!
+  eventsByTransaction(transactionId: String!): [TransactionEventEntity!]!
+  journalEntries(limit: Int, transactionId: String!): [TransactionJournalEntity!]!
+  membershipsByAccount(accountId: String!): [OrganizationMembershipEntity!]!
+  membershipsByOrganization(organizationId: String!): [OrganizationMembershipEntity!]!
+  message(id: String!): TransactionMessageEntity!
+  messagesByThread(threadKey: String!): [TransactionMessageEntity!]!
+  messagesByTransaction(transactionId: String!): [TransactionMessageEntity!]!
+  organization(id: String!): OrganizationEntity!
+  organizationMemberships: [OrganizationMembershipEntity!]!
+  organizations: [OrganizationEntity!]!
+  tasksAssignedTo(accountId: String!): [TransactionTaskEntity!]!
+  tasksByTransaction(transactionId: String!): [TransactionTaskEntity!]!
+  transaction(id: String!): TransactionEntity!
+  transactionDocument(id: String!): TransactionDocumentEntity!
+  transactionEvent(id: String!): TransactionEventEntity!
+  transactionParties(transactionId: String!): [TransactionPartyEntity!]!
+  transactionParty(id: String!): TransactionPartyEntity!
+  transactionTask(id: String!): TransactionTaskEntity!
+  transactions: [TransactionEntity!]!
+  transactionsByOrganization(organizationId: String!): [TransactionEntity!]!
+  user(id: String!): UserEntity!
+  users: [UserEntity!]!
+}
+
+enum StageInstanceStatus {
+  ACTIVE
+  COMPLETED
+  PENDING
+  WAIVED
+}
+
+enum SubmissionStatus {
+  ACCEPTED
+  ISSUES_FOUND
+  PENDING
+  SUPERSEDED
+  UNDER_REVIEW
+}
+
+enum TaskPriority {
+  HIGH
+  LOW
+  NORMAL
+  URGENT
+}
+
+enum TaskStatus {
+  BLOCKED
+  DONE
+  IN_PROGRESS
+  TODO
+  WAIVED
+}
+
+type TransactionDocumentEntity {
+  aiInteraction: AiInteractionEntity
+  approvedAt: DateTime
+  createdAt: DateTime!
+  documentType: String!
+  dueAt: DateTime
+  fileName: String
+  formCode: String
+  id: ID!
+  mimeType: String
+  previousVersion: TransactionDocumentEntity
+  requestedFromParty: TransactionPartyEntity
+  signedAt: DateTime
+  sourceDocument: TransactionDocumentEntity
+  sourceDocumentId: String
+  sourcePageEnd: Int
+  sourcePageStart: Int
+  stage: String
+  status: DocumentStatus!
+  storageUrl: String
+  submission: TransactionDocumentSubmissionEntity
+  title: String!
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+  uploadedByAccount: AccountEntity
+  versionNo: Int!
+  workflowStep: TransactionWorkflowStepEntity
+}
+
+type TransactionDocumentSubmissionEntity {
+  createdAt: DateTime!
+  documents: [TransactionDocumentEntity!]
+  id: ID!
+  notes: String
+  status: SubmissionStatus!
+  submissionNo: Int!
+  submittedByParty: TransactionPartyEntity
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+}
+
+type TransactionEntity {
+  apn: String
+  appraisalDeadlineAt: DateTime
+  assignedCoordinatorAccount: AccountEntity
+  bathrooms: Float
+  bedrooms: Float
+  cancelledAt: DateTime
+  closeOfEscrowAt: DateTime
+  closedAt: DateTime
+  commissionAmount: Float
+  contractPrice: Float
+  createdAt: DateTime!
+  createdByAccount: AccountEntity!
+  documents: [TransactionDocumentEntity!]
+  earnestMoneyAmount: Float
+  events: [TransactionEventEntity!]
+  externalRef: String
+  financeDeadlineAt: DateTime
+  formTemplate: TransactionFormTemplateEntity
+  id: ID!
+  inspectionDeadlineAt: DateTime
+  journals: [TransactionJournalEntity!]
+  listPrice: Float
+  lotSizeSqft: Int
+  messages: [TransactionMessageEntity!]
+  mlsNumber: String
+  offerAcceptedAt: DateTime
+  openEscrowAt: DateTime
+  organization: OrganizationEntity!
+  outboundEmailAddress: String
+  parties: [TransactionPartyEntity!]
+  propertyAddressLine1: String!
+  propertyAddressLine2: String
+  propertyCity: String!
+  propertyCounty: String
+  propertyPostalCode: String
+  propertyState: String!
+  side: TransactionSide!
+  squareFeet: Int
+  stageInstances: [TransactionStageInstanceEntity!]
+  status: TransactionStatus!
+  tasks: [TransactionTaskEntity!]
+  transactionNumber: String!
+  transactionType: TransactionType!
+  updatedAt: DateTime!
+  yearBuilt: Int
+}
+
+type TransactionEventEntity {
+  createdAt: DateTime!
+  createdByAccount: AccountEntity
+  eventDate: DateTime!
+  eventType: EventType!
+  id: ID!
+  notes: String
+  status: EventStatus!
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+}
+
+type TransactionFormTemplateEntity {
+  createdAt: DateTime!
+  createdByAccount: AccountEntity
+  description: String
+
+  """YYYY-MM-DD — template visible on/after this date"""
+  effectiveDate: String
+  id: ID!
+  isActive: Boolean!
+  isSystem: Boolean!
+  items: [TransactionFormTemplateItemEntity!]
+  name: String!
+  organization: OrganizationEntity
+
+  """YYYY-MM-DD — template hidden after this date"""
+  retiredDate: String
+  side: String!
+  stateCode: String
+  transactionType: String!
+  updatedAt: DateTime!
+}
+
+type TransactionFormTemplateItemEntity {
+  category: String!
+  createdAt: DateTime!
+  formCode: String!
+  formName: String!
+  id: ID!
+  isRequired: Boolean!
+  notes: String
+  sortOrder: Int!
+  stage: String
+  template: TransactionFormTemplateEntity!
+  updatedAt: DateTime!
+}
+
+type TransactionJournalEntity {
+  actorAccount: AccountEntity
+  body: String
+  createdAt: DateTime!
+  eventAt: DateTime!
+  id: ID!
+  journalType: JournalType!
+  relatedEntityId: ID
+  relatedEntityType: String
+  source: JournalSource!
+  title: String!
+  transaction: TransactionEntity!
+}
+
+type TransactionMessageEntity {
+  bodyText: String
+  channel: MessageChannel!
+  createdAt: DateTime!
+  direction: MessageDirection!
+  id: ID!
+  providerMessageId: String
+  providerName: String
+  providerThreadId: String
+  receivedAt: DateTime
+  recipientParty: TransactionPartyEntity
+  senderParty: TransactionPartyEntity
+  sentAt: DateTime
+  stage: String
+  status: MessageStatus!
+  subject: String
+  threadKey: String
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+  workflowStep: TransactionWorkflowStepEntity
+}
+
+type TransactionPartyEntity {
+  account: AccountEntity
+  contact: ContactEntity
+  createdAt: DateTime!
+  delegatedByParty: TransactionPartyEntity
+  displayName: String!
+  email: String
+  id: ID!
+  isPrimary: Boolean!
+  notes: String
+  organization: OrganizationEntity
+  partyRole: PartyRole!
+  phone: String
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+}
+
+enum TransactionSide {
+  BUYER_SIDE
+  DUAL
+  SELLER_SIDE
+}
+
+enum TransactionStage {
+  APPRAISAL
+  CLOSING
+  CONTRACT
+  DISCLOSURES
+  ESCROW
+  INSPECTION
+  INTAKE
+  LOAN
+  POST_CLOSE
+}
+
+type TransactionStageInstanceEntity {
+  completedAt: DateTime
+  createdAt: DateTime!
+  createdByAccount: AccountEntity
+  id: ID!
+  notes: String
+  stage: TransactionStage!
+  startedAt: DateTime
+  status: StageInstanceStatus!
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+  waivedAt: DateTime
+}
+
+enum TransactionStatus {
+  ACTIVE
+  ARCHIVED
+  CANCELLED
+  CLOSED
+  DRAFT
+  PENDING_CLOSE
+  UNDER_CONTRACT
+}
+
+type TransactionTaskEntity {
+  assignedAccount: AccountEntity
+  completedAt: DateTime
+  createdAt: DateTime!
+  createdByAccount: AccountEntity
+  dependsOnTask: TransactionTaskEntity
+  description: String
+  dueAt: DateTime
+  id: ID!
+  priority: TaskPriority!
+  status: TaskStatus!
+  templateKey: String
+  title: String!
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+  workflowStep: TransactionWorkflowStepEntity
+}
+
+enum TransactionType {
+  LEASE
+  PURCHASE
+  SALE
+}
+
+type TransactionWorkflowStepEntity {
+  category: String!
+  completedAt: DateTime
+  createdAt: DateTime!
+  dueAt: DateTime
+  id: ID!
+  isOptional: Boolean!
+  notes: String
+  responsibleRole: String!
+  sortOrder: Int!
+  startedAt: DateTime
+  status: String!
+  stepKey: String!
+  stepName: String!
+  templateStep: TransactionWorkflowTemplateStepEntity
+  transaction: TransactionEntity!
+  updatedAt: DateTime!
+  waivedAt: DateTime
+}
+
+type TransactionWorkflowTemplateEntity {
+  createdAt: DateTime!
+  createdByAccount: AccountEntity
+  description: String
+  id: ID!
+  isActive: Boolean!
+  isSystem: Boolean!
+  name: String!
+  organization: OrganizationEntity
+  side: String!
+  stateCode: String
+  steps: [TransactionWorkflowTemplateStepEntity!]
+  transactionType: String!
+  updatedAt: DateTime!
+  version: Int!
+}
+
+type TransactionWorkflowTemplateStepEntity {
+  category: String!
+  createdAt: DateTime!
+  defaultDurationDays: Int
+  description: String
+  id: ID!
+  isOptional: Boolean!
+  responsibleRole: String!
+  sortOrder: Int!
+  stepKey: String!
+  stepName: String!
+  template: TransactionWorkflowTemplateEntity!
+  updatedAt: DateTime!
+}
+
+input UpdateAccountInput {
+  cellPhone: String
+  displayName: String
+  firstName: String
+  lastName: String
+  locale: String
+  officePhone: String
+  timezone: String
+}
+
+input UpdateContactInput {
+  addressLine1: String
+  city: String
+  companyName: String
+  contactType: ContactType
+  email: String
+  firstName: String
+  lastName: String
+  phone: String
+  postalCode: String
+  state: String
+}
+
+input UpdateDocumentInput {
+  documentType: String
+  dueAt: String
+  fileName: String
+  mimeType: String
+  requestedFromPartyId: String
+  status: DocumentStatus
+  storageKey: String
+  storageUrl: String
+  title: String
+  uploadedByAccountId: String
+}
+
+input UpdateOrganizationInput {
+  addressLine1: String
+  city: String
+  licenseNumber: String
+  name: String
+  phone: String
+  state: String
+  type: OrgType
+}
+
+input UpdateTransactionEventInput {
+  eventDate: String
+  notes: String
+  status: EventStatus
+}
+
+input UpdateTransactionInput {
+  appraisalDeadlineAt: String
+  assignedCoordinatorAccountId: String
+  closeOfEscrowAt: String
+  commissionAmount: Float
+  contractPrice: Float
+  earnestMoneyAmount: Float
+  financeDeadlineAt: String
+  inspectionDeadlineAt: String
+  listPrice: Float
+  mlsNumber: String
+  offerAcceptedAt: String
+  openEscrowAt: String
+  propertyAddressLine1: String
+  propertyAddressLine2: String
+  propertyCity: String
+  propertyPostalCode: String
+  propertyState: String
+  side: TransactionSide
+  status: TransactionStatus
+  transactionType: TransactionType
+}
+
+input UpdateTransactionPartyInput {
+  contactId: String
+  displayName: String
+  email: String
+  isPrimary: Boolean
+  organizationId: String
+  partyRole: PartyRole
+  phone: String
+}
+
+input UpdateTransactionTaskInput {
+  assignedAccountId: String
+  dependsOnTaskId: String
+  description: String
+  dueAt: String
+  priority: TaskPriority
+  status: TaskStatus
+  title: String
+}
+
+input UpdateUserInput {
+  phone: String
+  status: UserStatus
+}
+
+type UserEntity {
+  createdAt: DateTime!
+  email: String!
+  emailVerifiedAt: DateTime
+  id: ID!
+  lastLoginAt: DateTime
+  phone: String
+  roles: [UserRole!]!
+  status: UserStatus!
+  updatedAt: DateTime!
+}
+
+enum UserRole {
+  AGENT
+  BROKER_ADMIN
+  SUPPORT_ADMIN
+  TRANSACTION_COORDINATOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+  SUSPENDED
+}

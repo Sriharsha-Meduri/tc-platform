@@ -1,0 +1,37 @@
+{
+  "formCode": "FRR-PA",
+  "formName": null,
+  "data": {
+    "documentType": "Federal Reporting Requirement Purchase Addendum",
+    "property": {
+      "streetAddress": "15982 Lasselle St.",
+      "city": "Moreno Valley",
+      "state": "CA",
+      "postalCode": "92551",
+      "county": null,
+      "apn": null
+    },
+    "transaction": {
+      "purchasePrice": null,
+      "earnestMoneyAmount": null,
+      "offerDate": "02/26/2026",
+      "closingDate": null,
+      "financingType": null,
+      "loanAmount": null
+    },
+    "parties": {
+      "buyers": [
+        { "fullName": "Jeannette Gonzalez", "signaturePresent": true },
+        { "fullName": "Xala Flores Esteban Roberto", "signaturePresent": true }
+      ],
+      "sellers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": true }
+      ]
+    },
+    "extractionWarnings": [
+      "Generic schema used — no FRR-PA form definition registered. Buyer/seller roles may be swapped on this addendum.",
+      "The purchase price is not specified in this document.",
+      "The closing date is not specified in this document."
+    ]
+  }
+}

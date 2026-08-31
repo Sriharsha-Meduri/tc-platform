@@ -1,0 +1,25 @@
+# Fly.io config for the TC NestJS API
+# Deploy from repo root: fly deploy --config fly.toml
+
+app = "tc-api"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "apps/api/Dockerfile"
+  # Build context is the repo root so COPY paths in Dockerfile work
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1

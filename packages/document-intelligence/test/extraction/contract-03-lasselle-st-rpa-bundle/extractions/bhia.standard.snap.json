@@ -1,0 +1,32 @@
+{
+  "formCode": "BHIA",
+  "formName": null,
+  "data": {
+    "documentType": "Buyer Homeowners' Insurance Advisory",
+    "property": {
+      "streetAddress": null,
+      "city": null,
+      "state": "CA",
+      "postalCode": null,
+      "county": null,
+      "apn": null
+    },
+    "transaction": {
+      "purchasePrice": null,
+      "earnestMoneyAmount": null,
+      "offerDate": null,
+      "closingDate": null,
+      "financingType": null,
+      "loanAmount": null
+    },
+    "parties": {
+      "buyers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": true }
+      ],
+      "sellers": []
+    },
+    "extractionWarnings": [
+      "Generic schema used — no BHIA form definition registered."
+    ]
+  }
+}

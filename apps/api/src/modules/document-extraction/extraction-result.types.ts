@@ -1,0 +1,20 @@
+// Re-exported from @tc/document-intelligence — edit extractor.types.ts in that package
+export type {
+  ExtractionResult,
+  ExtractionProperty,
+  ExtractionTransaction,
+  ExtractionParties,
+  ExtractionBuyer,
+  ExtractionSeller,
+  ExtractionAgent,
+  ExtractionCompany,
+  ExtractionContractTerms,
+  ExtractionDeadline,
+  ExtractionForm,
+  ExtractionSignatures,
+  ExtractionConfidenceSummary,
+  ContractDocumentExtraction,
+  ContractDocumentExtractedTerms,
+  ContractDocumentSignatures,
+  ContractContingencyInfo,
+} from '@tc/document-intelligence';

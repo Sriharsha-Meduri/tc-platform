@@ -1,0 +1,19 @@
+Hello {{recipientName}},
+
+You've been added as the escrow officer for the transaction at {{propertyAddress}}. Please use the secure link below to upload the required escrow documents.
+
+{{uploadUrl}}
+
+No login is required. This secure link is unique to this transaction and intended only for you as the escrow officer. Please do not forward it to unrelated parties.
+{{#if ccInstructionEmail}}
+Please copy {{ccInstructionEmail}} on all transaction-related communications going forward.
+{{/if}}
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

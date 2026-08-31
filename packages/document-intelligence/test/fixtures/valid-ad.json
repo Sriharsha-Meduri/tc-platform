@@ -1,0 +1,14 @@
+{
+  "confirmation": {
+    "buyer_agent": "Agent A",
+    "seller_agent": "Agent B",
+    "buyer_brokerage_firm": "Realty Co",
+    "seller_brokerage_firm": "Realty Co"
+  },
+  "A_disclosure": {
+    "disclosure_acknowledged": true
+  },
+  "D_potentially_competing_buyers_and_sellers": {
+    "possible_representation_checked": false
+  }
+}

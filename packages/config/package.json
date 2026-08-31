@@ -1,0 +1,19 @@
+{
+  "name": "@tc/config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./eslint-base": "./eslint-base.js",
+    "./eslint-next": "./eslint-next.js",
+    "./eslint-react-native": "./eslint-react-native.js",
+    "./tsconfig-base": "./tsconfig-base.json",
+    "./tsconfig-next": "./tsconfig-next.json",
+    "./tsconfig-nest": "./tsconfig-nest.json",
+    "./tsconfig-react-native": "./tsconfig-react-native.json"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0"
+  }
+}

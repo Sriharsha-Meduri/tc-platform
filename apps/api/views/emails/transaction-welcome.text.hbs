@@ -1,0 +1,47 @@
+Welcome to Escrow & Transaction Timeline
+
+Hello,
+
+This is to confirm that the transaction at {{propertyAddress}} has entered escrow. This email and the timeline below are being shared with all parties on the transaction.
+
+Transaction #{{txNumber}}
+
+{{#if tcName}}My name is {{tcName}}, and I will be serving as the Transaction Coordinator for this transaction on behalf of {{buyerAgentName}}.{{else}}I will be serving as the Transaction Coordinator for this transaction on behalf of {{buyerAgentName}}.{{/if}}
+
+I will help coordinate the transaction, monitor important deadlines, and ensure that all required documents are completed before closing. Please include me on email communications involving disclosures, reports, escrow documents, or other transaction-related matters.
+
+HOW TO SUBMIT DOCUMENTS
+
+The Buyer Agent and Seller Agent will each receive a separate email with a secure upload link for submitting transaction documents. Please do not send or attach documents by replying to this Welcome Email. Use the secure upload link provided in the separate email instead.
+
+TRANSACTION TIMELINE
+
+Please note that, where applicable under the contract, deadlines falling on a weekend or holiday will be adjusted to the next business day. Below is the tentative timeline for the transaction:
+
+{{#each rows}}
+- {{label}}: {{deadline}} ({{timeframe}}) — {{status}}
+{{else}}
+Timeline details will be provided as documents are finalized.
+{{/each}}
+
+Your agent and transaction coordinator will provide additional instructions as each milestone approaches. Please review this timeline and notify us promptly if any information appears incorrect.
+
+Please feel free to contact me with any questions during the transaction. You can also reply to this email for questions — your message will be attached to the transaction thread (please do not attach documents to this reply; see the upload-link instructions above).
+
+Thank you,
+
+{{#if tcName}}{{tcName}}
+{{/if}}Transaction Coordinator for {{buyerAgentName}}
+{{#if tcPhone}}{{tcPhone}}
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}
+myTC
+Automating Every Step After Contract Acceptance
+
+This tentative timeline is based on the transaction documents currently available. Any fully executed counteroffer, amendment, extension, or cancellation may change these dates. The fully executed contract documents control.
+
+---
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}
+{{/if}}

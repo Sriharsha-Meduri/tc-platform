@@ -1,0 +1,35 @@
+{
+  "formCode": "WFA",
+  "formName": null,
+  "data": {
+    "documentType": "Wire Fraud and Electronic Funds Transfer Advisory",
+    "property": {
+      "streetAddress": null,
+      "city": null,
+      "state": null,
+      "postalCode": null,
+      "county": null,
+      "apn": null
+    },
+    "transaction": {
+      "purchasePrice": null,
+      "earnestMoneyAmount": null,
+      "offerDate": "2026-02-26",
+      "closingDate": null,
+      "financingType": null,
+      "loanAmount": null
+    },
+    "parties": {
+      "buyers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": true }
+      ],
+      "sellers": [
+        { "fullName": "Jeannette Gonzalez", "signaturePresent": true },
+        { "fullName": "Xala Flores Esteban Roberto", "signaturePresent": true }
+      ]
+    },
+    "extractionWarnings": [
+      "Generic schema used — no WFA form definition registered."
+    ]
+  }
+}

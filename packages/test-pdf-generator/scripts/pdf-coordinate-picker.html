@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF Coordinate Picker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; display: flex; height: 100vh; background: #1a1a1a; color: #eee; }
+  #sidebar { width: 340px; overflow-y: auto; padding: 16px; background: #222; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  #sidebar h2 { font-size: 14px; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+  #sidebar label { font-size: 12px; color: #aaa; }
+  #sidebar input, #sidebar select, #sidebar button { padding: 6px 10px; font-size: 13px; border: 1px solid #444; border-radius: 4px; background: #333; color: #eee; }
+  #sidebar button { cursor: pointer; background: #2563eb; border-color: #2563eb; font-weight: 600; }
+  #sidebar button:hover { background: #1d4ed8; }
+  #sidebar button.danger { background: #dc2626; border-color: #dc2626; }
+  #sidebar button.danger:hover { background: #b91c1c; }
+  #sidebar button.secondary { background: #555; border-color: #555; }
+  #sidebar button.secondary:hover { background: #666; }
+  #sidebar button.success { background: #16a34a; border-color: #16a34a; }
+  #sidebar button.success:hover { background: #15803d; }
+  #statusBar { font-size: 12px; background: #111; padding: 8px; border-radius: 4px; font-family: monospace; white-space: pre; min-height: 50px; }
+  #fieldList { flex: 1; overflow-y: auto; font-size: 12px; border: 1px solid #333; border-radius: 4px; }
+  #fieldList .page-group { padding: 4px 6px; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; background: #1a1a1a; position: sticky; top: 0; z-index: 1; }
+  #fieldList .entry { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; border-bottom: 1px solid #333; cursor: pointer; }
+  #fieldList .entry:hover { background: #2a2a2a; }
+  #fieldList .entry.active { background: #1e3a5f; border-left: 3px solid #3b82f6; }
+  #fieldList .entry .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; flex-shrink: 0; }
+  #fieldList .entry .status-dot.set { background: #22c55e; }
+  #fieldList .entry .status-dot.unset { background: #555; }
+  #fieldList .entry .field-name { flex: 1; }
+  #fieldList .entry .field-coord { color: #888; font-size: 11px; }
+  #progressBar { height: 4px; background: #333; border-radius: 2px; overflow: hidden; }
+  #progressFill { height: 100%; background: #22c55e; transition: width 0.3s; border-radius: 2px; }
+  #viewer { flex: 1; overflow: auto; display: flex; flex-direction: column; align-items: center; padding: 10px; position: relative; }
+  #canvas-container { position: relative; display: inline-block; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+  canvas { display: block; margin: 0; }
+  #pageNav { display: flex; align-items: center; gap: 12px; padding: 8px; font-size: 13px; }
+  #pageNav button { padding: 4px 14px; border: 1px solid #444; border-radius: 4px; background: #333; color: #eee; cursor: pointer; font-size: 13px; }
+  #pageNav button:hover { background: #444; }
+  #pageNav button:disabled { opacity: 0.4; cursor: default; }
+  #crosshair { position: absolute; pointer-events: none; display: none; }
+  #crosshair::before, #crosshair::after { content: ''; position: absolute; background: #ff0; }
+  #crosshair::before { width: 20px; height: 1px; left: -10px; top: 0; }
+  #crosshair::after { width: 1px; height: 20px; left: 0; top: -10px; }
+  #coords-display { position: absolute; background: rgba(0,0,0,0.8); color: #0f0; padding: 4px 8px; border-radius: 4px; font: 12px monospace; pointer-events: none; display: none; }
+  .status-bar { font-size: 11px; color: #888; padding: 4px 0; }
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <h2>Coordinate Picker</h2>
+  <label>1. Load coordinate .ts file</label>
+  <input type="file" id="tsFile" accept=".ts" />
+  <label>2. Open PDF template</label>
+  <input type="file" id="pdfFile" accept=".pdf" />
+  <div id="progressBar"><div id="progressFill" style="width:0%"></div></div>
+  <div id="statusBar">Load a .ts coordinate file to get field names</div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap">
+    <button id="exportBtn" class="success">Export .ts</button>
+    <button id="clearBtn" class="danger">Clear All</button>
+    <button id="resetBtn" class="secondary">Reset Selected</button>
+  </div>
+  <div id="addFieldSection" style="border-top:1px solid #333;padding-top:8px;margin-top:4px">
+    <label>Add New Field</label>
+    <div style="display:flex;gap:4px">
+      <input type="text" id="newFieldName" placeholder="dotted.path.name" style="flex:1" />
+      <button id="addFieldBtn" title="Add field">＋</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;align-items:center">
+      <small style="color:#888">Page: <select id="newFieldPage" style="padding:2px 6px;font-size:12px"></select></small>
+      <small style="color:#888"><label><input type="checkbox" id="addAndStayCheck" checked /> stay active</label></small>
+    </div>
+  </div>
+  <label>Fields <span id="fieldCount" style="color:#888;font-weight:normal;"></span></label>
+  <div id="fieldList"></div>
+  <div class="status-bar">Click a field name, then click on the PDF</div>
+  <div class="status-bar">Coordinates are top-down origin (0,0 = top-left)</div>
+</div>
+<div id="viewer">
+  <div id="pageNav">
+    <button id="prevPage">&larr; Prev</button>
+    <span id="pageIndicator">Page 1 / 1</span>
+    <button id="nextPage">Next &rarr;</button>
+  </div>
+  <div id="canvas-container">
+    <canvas id="pdfCanvas"></canvas>
+    <div id="crosshair"></div>
+    <div id="coords-display"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfDoc = null;
+let totalPages = 0;
+let currentPage = 1;
+let scale = 1.5;
+let formCode = 'FORM';
+let pageGroups = []; // [{ pageNumber, fields: { name: {x,y} } }]
+let activeField = null;
+let loadedFileName = '';
+
+const canvas = document.getElementById('pdfCanvas');
+const ctx = canvas.getContext('2d');
+const container = document.getElementById('canvas-container');
+const crosshair = document.getElementById('crosshair');
+const coordDisplay = document.getElementById('coords-display');
+
+// --- Parse .ts file ---
+document.getElementById('tsFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  loadedFileName = file.name;
+  const reader = new FileReader();
+  reader.onload = (ev) => parseTsFile(ev.target.result, file.name);
+  reader.readAsText(file);
+});
+
+function parseTsFile(content, filename) {
+  const codeMatch = content.match(/export\s+const\s+(\w+)\s*:/);
+  formCode = codeMatch ? codeMatch[1].toUpperCase() : filename.replace('.ts', '').toUpperCase();
+
+  // TS files store pdf-lib y (distance from bottom). Convert to top-down on load.
+  const pageH = pdfDoc ? (canvas.height / scale) : 792;
+
+  pageGroups = [];
+  // Match each { pageNumber: N, fields: { ... } } group
+  const pageRegex = /\{\s*pageNumber\s*:\s*(\d+)\s*,[\s\S]*?fields\s*:\s*\{([\s\S]*?)\},?\s*\}/g;
+  let pm;
+  while ((pm = pageRegex.exec(content)) !== null) {
+    const pg = parseInt(pm[1]);
+    const body = pm[2];
+    const group = { pageNumber: pg, fields: {} };
+    const lineRegex = /'([^']+)'\s*:\s*\{([^}]+)\}/g;
+    let lm;
+    while ((lm = lineRegex.exec(body)) !== null) {
+      const name = lm[1];
+      const props = lm[2];
+      const xM = props.match(/x\s*:\s*(\d+)/);
+      const yM = props.match(/y\s*:\s*(\d+)/);
+      if (xM && yM) {
+        const pdfLibY = parseInt(yM[1]);
+        group.fields[name] = { x: parseInt(xM[1]), y: Math.round(pageH - pdfLibY) };
+      } else {
+        group.fields[name] = { x: null, y: null };
+      }
+    }
+    pageGroups.push(group);
+  }
+
+  if (pageGroups.length === 0) {
+    document.getElementById('statusBar').textContent = 'Could not parse page groups from .ts file';
+    return;
+  }
+
+  const total = pageGroups.reduce((s, g) => s + Object.keys(g.fields).length, 0);
+  document.getElementById('statusBar').textContent =
+    `Loaded ${total} fields across ${pageGroups.length} pages from ${formCode}`;
+  activeField = null;
+  renderFieldList();
+  if (pdfDoc) { currentPage = 1; renderPage(); }
+}
+
+// --- PDF loading ---
+document.getElementById('pdfFile').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const ab = await file.arrayBuffer();
+  pdfDoc = await pdfjsLib.getDocument({ data: ab }).promise;
+  totalPages = pdfDoc.numPages;
+  currentPage = 1;
+  renderPage();
+  populatePageSelector();
+});
+
+function renderPage() {
+  if (!pdfDoc) return;
+  pdfDoc.getPage(currentPage).then(page => {
+    const vp = page.getViewport({ scale });
+    canvas.width = vp.width;
+    canvas.height = vp.height;
+    container.style.width = canvas.width + 'px';
+    container.style.height = canvas.height + 'px';
+    page.render({ canvasContext: ctx, viewport: vp }).promise.then(() => drawMarkers());
+  });
+  document.getElementById('pageIndicator').textContent = `Page ${currentPage} / ${totalPages}`;
+  document.getElementById('prevPage').disabled = currentPage <= 1;
+  document.getElementById('nextPage').disabled = currentPage >= totalPages;
+}
+
+document.getElementById('prevPage').addEventListener('click', () => {
+  if (currentPage > 1) { currentPage--; renderPage(); }
+});
+document.getElementById('nextPage').addEventListener('click', () => {
+  if (currentPage < totalPages) { currentPage++; renderPage(); }
+});
+
+// --- Markers ---
+function drawMarkers() {
+  const group = pageGroups.find(g => g.pageNumber === currentPage);
+  if (!group) return;
+
+  for (const [name, pt] of Object.entries(group.fields)) {
+    if (pt.x === null) continue;
+    const cx = pt.x * scale, cy = pt.y * scale;
+    ctx.save();
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.25)';
+    ctx.strokeStyle = '#22c55e';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#22c55e';
+    ctx.font = '10px monospace';
+    ctx.fillText(name, cx + 8, cy + 4);
+    ctx.restore();
+  }
+
+  if (activeField) {
+    const pt = getField(activeField);
+    if (pt && pt.x !== null && getFieldPage(activeField) === currentPage) {
+      const cx = pt.x * scale, cy = pt.y * scale;
+      ctx.save();
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    }
+  }
+}
+
+function getField(name) {
+  for (const g of pageGroups) {
+    if (name in g.fields) return g.fields[name];
+  }
+  return null;
+}
+
+function getFieldPage(name) {
+  for (const g of pageGroups) {
+    if (name in g.fields) return g.pageNumber;
+  }
+  return null;
+}
+
+// --- Click handler ---
+const getPdfCoords = (e) => {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: Math.round((e.clientX - rect.left) / scale),
+    y: Math.round((e.clientY - rect.top) / scale),
+  };
+};
+
+canvas.addEventListener('mousemove', (e) => {
+  const { x, y } = getPdfCoords(e);
+  const cx = x * scale, cy = y * scale;
+  crosshair.style.left = cx + 'px';
+  crosshair.style.top = cy + 'px';
+  crosshair.style.display = 'block';
+  if (pdfDoc) {
+    coordDisplay.textContent = `${x}, ${y}`;
+    coordDisplay.style.left = (cx + 12) + 'px';
+    coordDisplay.style.top = (cy - 20) + 'px';
+    coordDisplay.style.display = 'block';
+  }
+});
+canvas.addEventListener('mouseleave', () => { crosshair.style.display = 'none'; coordDisplay.style.display = 'none'; });
+
+canvas.addEventListener('click', (e) => {
+  if (!pdfDoc) return;
+  if (!activeField) { document.getElementById('statusBar').textContent = 'Select a field from the list first!'; return; }
+  const fieldPage = getFieldPage(activeField);
+  if (fieldPage !== currentPage) {
+    document.getElementById('statusBar').textContent = `This field is on page ${fieldPage}. Navigate to page ${fieldPage} first.`;
+    return;
+  }
+  const { x: pdfX, y: pdfY } = getPdfCoords(e);
+  const pageH = canvas.height / scale;
+  const group = pageGroups.find(g => g.pageNumber === currentPage);
+  group.fields[activeField] = { x: pdfX, y: pdfY };
+  document.getElementById('statusBar').textContent =
+    `Set ${activeField} → (${pdfX}, ${pdfY})  |  pdf-lib: (${pdfX}, ${Math.round(pageH - pdfY)})`;
+  renderFieldList();
+  renderPage();
+});
+
+// --- Field list ---
+function renderFieldList() {
+  const list = document.getElementById('fieldList');
+  let total = 0, setCount = 0;
+  pageGroups.forEach(g => { total += Object.keys(g.fields).length; });
+  pageGroups.forEach(g => { Object.values(g.fields).forEach(pt => { if (pt.x !== null) setCount++; }); });
+  document.getElementById('fieldCount').textContent = `${setCount}/${total} set`;
+  document.getElementById('progressFill').style.width = total ? `${(setCount / total) * 100}%` : '0%';
+
+  list.innerHTML = pageGroups.map(g => {
+    const pageFields = Object.entries(g.fields);
+    if (pageFields.length === 0) return '';
+    return `<div class="page-group">Page ${g.pageNumber}</div>` +
+      pageFields.map(([name, pt]) => {
+        const isSet = pt.x !== null;
+        const isActive = name === activeField;
+        return `<div class="entry${isActive ? ' active' : ''}" data-name="${name}">
+          <span class="status-dot ${isSet ? 'set' : 'unset'}"></span>
+          <span class="field-name">${name}</span>
+          <span class="field-coord">${isSet ? `(${pt.x}, ${pt.y})` : '—'}</span>
+          <button class="delete-field" data-name="${name}" title="Delete field" style="background:none;border:none;color:#888;cursor:pointer;font-size:14px;padding:0 2px;">&times;</button>
+        </div>`;
+      }).join('');
+  }).join('');
+
+  list.querySelectorAll('.entry').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-field')) return;
+      const name = el.dataset.name;
+      activeField = name;
+      const fp = getFieldPage(name);
+      const pt = getField(name);
+      document.getElementById('statusBar').textContent =
+        `Selected: ${name} (page ${fp})${pt && pt.x !== null ? ` at (${pt.x}, ${pt.y})` : ' (not set)'} — click PDF to set`;
+      // Auto-navigate to field's page
+      if (fp && fp !== currentPage) { currentPage = fp; renderPage(); }
+      renderFieldList();
+    });
+  });
+
+  list.querySelectorAll('.delete-field').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const name = btn.dataset.name;
+      for (const g of pageGroups) {
+        if (name in g.fields) { delete g.fields[name]; break; }
+      }
+      if (activeField === name) activeField = null;
+      document.getElementById('statusBar').textContent = `Deleted "${name}"`;
+      renderFieldList();
+      if (pdfDoc) renderPage();
+    });
+  });
+}
+
+// --- Actions ---
+document.getElementById('clearBtn').addEventListener('click', () => {
+  pageGroups.forEach(g => { Object.keys(g.fields).forEach(k => { g.fields[k] = { x: null, y: null }; }); });
+  activeField = null;
+  renderFieldList();
+  if (pdfDoc) renderPage();
+  document.getElementById('statusBar').textContent = 'All fields cleared';
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (!activeField) { document.getElementById('statusBar').textContent = 'Select a field first'; return; }
+  for (const g of pageGroups) {
+    if (activeField in g.fields) { g.fields[activeField] = { x: null, y: null }; break; }
+  }
+  renderFieldList();
+  if (pdfDoc) renderPage();
+  document.getElementById('statusBar').textContent = `Reset ${activeField}`;
+});
+
+document.getElementById('exportBtn').addEventListener('click', async () => {
+  if (pageGroups.length === 0) { document.getElementById('statusBar').textContent = 'Load a .ts file first'; return; }
+  const pageH = pdfDoc ? (canvas.height / scale) : 792;
+  const entries = pageGroups.map(g => {
+    const hasSet = Object.values(g.fields).some(pt => pt.x !== null);
+    if (!hasSet) return null;
+    const fields = Object.entries(g.fields)
+      .filter(([, pt]) => pt.x !== null)
+      .map(([name, pt]) => {
+        const pdfLibY = Math.round(pageH - pt.y);
+        return `      '${name}': { x: ${pt.x}, y: ${pdfLibY}, w: 120, fontSize: 10 },`;
+      }).join('\n');
+    return `  {\n    pageNumber: ${g.pageNumber},\n    fields: {\n${fields}\n    },\n  }`;
+  }).filter(Boolean).join(',\n');
+  const output = `import { CoordinateMap } from '../types';\n\nexport const ${formCode}: CoordinateMap = [\n${entries}\n];\n`;
+
+  // Try File System Access API to overwrite the original file
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: loadedFileName || `${formCode.toLowerCase()}.ts`,
+      types: [{ description: 'TypeScript', accept: { 'text/plain': ['.ts'] } }],
+    });
+    const writable = await handle.createWritable();
+    await writable.write(output);
+    await writable.close();
+    document.getElementById('statusBar').textContent = `Saved to ${loadedFileName}`;
+  } catch (err) {
+    if (err.name === 'AbortError') return; // user cancelled
+    // Fallback: download
+    const blob = new Blob([output], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = loadedFileName || `${formCode.toLowerCase()}.ts`;
+    a.click();
+    URL.revokeObjectURL(url);
+    document.getElementById('statusBar').textContent = `Downloaded ${loadedFileName || `${formCode.toLowerCase()}.ts`}`;
+  }
+});
+
+// --- Add new field ---
+const newFieldName = document.getElementById('newFieldName');
+const newFieldPage = document.getElementById('newFieldPage');
+const addAndStayCheck = document.getElementById('addAndStayCheck');
+
+function populatePageSelector() {
+  const max = pdfDoc ? totalPages : (pageGroups.length ? Math.max(...pageGroups.map(g => g.pageNumber)) : 10);
+  newFieldPage.innerHTML = '';
+  for (let i = 1; i <= max; i++) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `Page ${i}${pdfDoc ? '' : ''}`;
+    newFieldPage.appendChild(opt);
+  }
+  newFieldPage.value = currentPage;
+}
+
+// Refresh page selector when PDF loads
+
+document.getElementById('addFieldBtn').addEventListener('click', () => {
+  const name = newFieldName.value.trim();
+  if (!name) { document.getElementById('statusBar').textContent = 'Enter a field name first'; return; }
+
+  // Check for duplicates
+  const existing = pageGroups.some(g => name in g.fields);
+  if (existing) { document.getElementById('statusBar').textContent = `Field "${name}" already exists`; return; }
+
+  const page = parseInt(newFieldPage.value);
+
+  // Find or create page group
+  let group = pageGroups.find(g => g.pageNumber === page);
+  if (!group) {
+    group = { pageNumber: page, fields: {} };
+    pageGroups.push(group);
+    pageGroups.sort((a, b) => a.pageNumber - b.pageNumber);
+  }
+
+  group.fields[name] = { x: null, y: null };
+  activeField = name;
+
+  // Navigate to the field's page
+  if (currentPage !== page) { currentPage = page; renderPage(); }
+  document.getElementById('statusBar').textContent =
+    `Added "${name}" on page ${page} — click PDF to set position`;
+  newFieldName.value = '';
+  renderFieldList();
+  if (!addAndStayCheck.checked) {
+    // Focus back on input for consecutive additions
+    setTimeout(() => newFieldName.focus(), 50);
+  }
+});
+
+newFieldName.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('addFieldBtn').click();
+});
+
+// Hook page change into selector
+const origRenderPage = renderPage;
+renderPage = function() {
+  origRenderPage.call(this);
+  if (newFieldPage) newFieldPage.value = currentPage;
+};
+
+populatePageSelector();
+renderFieldList();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "formCode": "CCPA",
+  "formName": null,
+  "data": {
+    "documentType": "CCPA Advisory, Disclosure and Notice",
+    "property": {
+      "streetAddress": null,
+      "city": null,
+      "state": null,
+      "postalCode": null,
+      "county": null,
+      "apn": null
+    },
+    "transaction": {
+      "purchasePrice": null,
+      "earnestMoneyAmount": null,
+      "offerDate": "2026-02-26",
+      "closingDate": null,
+      "financingType": null,
+      "loanAmount": null
+    },
+    "parties": {
+      "buyers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": true }
+      ],
+      "sellers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": false }
+      ]
+    },
+    "extractionWarnings": [
+      "Generic schema used — no CCPA form definition registered.",
+      "Varun Srivastava role is ambiguous on this form — appears as both buyer and seller."
+    ]
+  }
+}

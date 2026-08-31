@@ -1,0 +1,108 @@
+{
+  "purchase_agreements": [
+    { "code": "RPA",   "name": "Residential Purchase Agreement and Joint Escrow Instructions",                       "required": "mandatory" },
+    { "code": "RIPA",  "name": "Residential Income Property Purchase Agreement and Joint Escrow Instructions",       "required": "mandatory" },
+    { "code": "VLPA",  "name": "Vacant Land Purchase Agreement and Joint Escrow Instructions",                      "required": "mandatory" },
+    { "code": "CPA",   "name": "Commercial Property Purchase Agreement and Joint Escrow Instructions",              "required": "mandatory" },
+    { "code": "MH-PA", "name": "Manufactured Home Purchase Agreement",                                              "required": "mandatory" },
+    { "code": "NIPA",  "name": "New Construction Purchase Agreement",                                               "required": "mandatory" }
+  ],
+  "counter_offers": [
+    { "code": "SCO",  "name": "Seller Counter Offer",                   "required": "optional" },
+    { "code": "SMCO", "name": "Seller Multiple Counter Offer",          "required": "optional" },
+    { "code": "BCO",  "name": "Buyer Counter Offer",                    "required": "optional" },
+    { "code": "BMCO", "name": "Buyer Multiple Counter Offer Selection", "required": "optional" }
+  ],
+  "listing_agreements": [
+    { "code": "RLA",     "name": "Residential Listing Agreement — Exclusive Authorization and Right to Sell",          "required": "mandatory" },
+    { "code": "RLAA",    "name": "Residential Listing Agreement — Exclusive Authorization and Right to Sell (Agency)", "required": "optional" },
+    { "code": "RLAS",    "name": "Residential Listing Agreement — Seller Reserved",                                    "required": "optional" },
+    { "code": "RLBO",    "name": "Residential Listing Agreement — Open",                                               "required": "optional" },
+    { "code": "CLAL",    "name": "Commercial Listing Agreement — Exclusive Authorization",                             "required": "mandatory" },
+    { "code": "LLAL",    "name": "Land Listing Agreement — Exclusive Authorization",                                   "required": "mandatory" },
+    { "code": "RIPA-LA", "name": "Residential Income Property Listing Agreement",                                      "required": "mandatory" }
+  ],
+  "buyer_representation": [
+    { "code": "BRBC",   "name": "Buyer Representation and Broker Compensation Agreement",            "required": "mandatory" },
+    { "code": "BRBB",   "name": "Buyer Representation and Broker Compensation — Bilateral",          "required": "optional" },
+    { "code": "BRBCAA", "name": "Buyer Representation and Broker Compensation Agreement — Addendum", "required": "optional" }
+  ],
+  "disclosures": [
+    { "code": "TDS",   "name": "Real Estate Transfer Disclosure Statement",                                         "required": "mandatory" },
+    { "code": "SPQ",   "name": "Seller Property Questionnaire",                                                     "required": "mandatory" },
+    { "code": "SPQR",  "name": "Supplemental Seller Property Questionnaire",                                        "required": "optional" },
+    { "code": "AD",    "name": "Disclosure Regarding Real Estate Agency Relationships",                              "required": "mandatory" },
+    { "code": "AVID",  "name": "Agent Visual Inspection Disclosure",                                                "required": "mandatory" },
+    { "code": "SBSA",  "name": "Statewide Buyer and Seller Advisory",                                               "required": "optional" },
+    { "code": "NHD",   "name": "Natural Hazard Disclosure Statement",                                               "required": "mandatory" },
+    { "code": "FHDA",  "name": "Fair Housing and Discrimination Advisory",                                          "required": "optional" },
+    { "code": "WFA",   "name": "Wire Fraud and Electronic Funds Transfer Advisory",                                 "required": "optional" },
+    { "code": "CCPA",  "name": "California Consumer Privacy Act Advisory, Disclosure and Notice",                   "required": "optional" },
+    { "code": "PRBS",  "name": "Possible Representation of More Than One Buyer or Seller — Disclosure and Consent", "required": "optional" },
+    { "code": "WPA",   "name": "Water-Saving Plumbing Retrofit Disclosure and Waiver",                              "required": "conditional" },
+    { "code": "MELLO", "name": "Mello-Roos and Special Assessment Disclosure",                                      "required": "conditional" },
+    { "code": "WHSD",  "name": "Residential Earthquake Hazards Report",                                             "required": "conditional" },
+    { "code": "IBA",   "name": "Interim Occupancy Addendum — HOA",                                                  "required": "conditional" }
+  ],
+  "advisories": [
+    { "code": "BIA",    "name": "Buyer's Investigation Advisory",                    "required": "optional" },
+    { "code": "BHIA",   "name": "Buyer Homeowners' Insurance Advisory",              "required": "optional" },
+    { "code": "AEA",    "name": "Agent Environmental Advisory",                      "required": "optional" },
+    { "code": "FHA-VA", "name": "FHA/VA and Conventional Financing Advisory",        "required": "optional" },
+    { "code": "RSPA",   "name": "Residential Square Footage Advisory",               "required": "optional" },
+    { "code": "SEA",    "name": "Solar Energy Advisory",                             "required": "optional" },
+    { "code": "PED",    "name": "Parent/Guardian Authorization for Minor Signatory", "required": "conditional" },
+    { "code": "HAA",    "name": "Home Affordability Advisory",                       "required": "optional" }
+  ],
+  "addenda": [
+    { "code": "AADDM",   "name": "Addendum",                                         "required": "optional" },
+    { "code": "HOA",     "name": "Homeowners Association Information and Addendum",  "required": "conditional" },
+    { "code": "IDA",     "name": "Increased Deposit Addendum",                       "required": "optional" },
+    { "code": "REOA",    "name": "REO Addendum",                                     "required": "optional" },
+    { "code": "SH",      "name": "Short Sale Addendum",                              "required": "optional" },
+    { "code": "PA",      "name": "Probate Purchase Addendum",                        "required": "optional" },
+    { "code": "ABA",     "name": "Additional Broker Acknowledgement",                "required": "optional" },
+    { "code": "FRR-PA",  "name": "Federal Reporting Requirement Purchase Addendum",  "required": "conditional" },
+    { "code": "SOLAR-A", "name": "Solar Panels and Systems Addendum",                "required": "conditional" },
+    { "code": "RLEO",    "name": "Residential Lease After Sale (Seller Leaseback)",  "required": "optional" },
+    { "code": "RID",     "name": "Residential Interim Occupancy Agreement",          "required": "optional" },
+    { "code": "HWA",     "name": "Home Warranty Addendum",                           "required": "optional" }
+  ],
+  "contingency_performance": [
+    { "code": "CR-B", "name": "Contingency Removal (Buyer)",                                                        "required": "optional" },
+    { "code": "CR-S", "name": "Contingency Removal (Seller)",                                                       "required": "optional" },
+    { "code": "NBP",  "name": "Notice to Buyer to Perform",                                                         "required": "optional" },
+    { "code": "NSP",  "name": "Notice to Seller to Perform",                                                        "required": "optional" },
+    { "code": "DCE",  "name": "Demand to Close Escrow",                                                             "required": "optional" },
+    { "code": "CC",   "name": "Cancellation of Contract, Release of Deposit and Joint Escrow Instructions",         "required": "optional" },
+    { "code": "VP",   "name": "Verification of Property Condition",                                                 "required": "optional" }
+  ],
+  "inspection_repair": [
+    { "code": "RR",   "name": "Request for Repair",                                              "required": "optional" },
+    { "code": "RRRR", "name": "Seller's Response to Buyer's Request for Repair",                 "required": "optional" },
+    { "code": "PEAD", "name": "Pest Control Disclosure and Addendum",                            "required": "conditional" },
+    { "code": "WCI",  "name": "Wood Destroying Pest Inspection and Allocation of Cost Addendum", "required": "conditional" }
+  ],
+  "finance": [
+    { "code": "PAA", "name": "Pre-Approval Letter Addendum",                     "required": "optional" },
+    { "code": "FVA", "name": "FHA/VA Financing Addendum",                        "required": "conditional" },
+    { "code": "ABI", "name": "Authorization for Bridge Loan / Interim Financing", "required": "optional" },
+    { "code": "LQ",  "name": "Lender Pre-Qualification Letter Request",          "required": "optional" }
+  ],
+  "federal_compliance": [
+    { "code": "LPD",    "name": "Lead-Based Paint and Lead-Based Paint Hazards Disclosure, Acknowledgment and Addendum", "required": "conditional" },
+    { "code": "FIRPTA", "name": "FIRPTA Disclosure",                                                                     "required": "conditional" }
+  ],
+  "lease_rental": [
+    { "code": "LR", "name": "California Residential Lease or Month-to-Month Rental Agreement", "required": "optional" },
+    { "code": "IA", "name": "Income and Expense Analysis",                                     "required": "optional" }
+  ],
+  "commercial": [
+    { "code": "CPA", "name": "Commercial Property Purchase Agreement", "required": "mandatory" },
+    { "code": "CDA", "name": "Commercial Disclosure Advisory",         "required": "optional" }
+  ],
+  "new_construction": [
+    { "code": "NCPA", "name": "New Construction Purchase Agreement and Escrow Instructions", "required": "mandatory" },
+    { "code": "IBA",  "name": "Interim Occupancy Addendum",                                 "required": "optional" }
+  ]
+}

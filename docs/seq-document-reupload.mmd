@@ -1,0 +1,77 @@
+sequenceDiagram
+    autonumber
+
+    actor Agent as Buyer Agent
+    participant Web as Next.js Web<br/>(apps/web)
+
+    Note over Agent,DB_S: ══ Scenario 2 — Re-upload: Corrected Document (new version) ══
+
+    participant TDC as TransactionDocumentsController<br/>POST /transaction-documents/:id/new-version
+    participant TDS as TransactionDocumentsService
+    participant DB_TD as transaction_documents
+
+    Agent->>Web: Upload corrected PDF<br/>(compliance issues found in v1)
+    Web->>TDC: POST /api/v1/transaction-documents/:docId/new-version<br/>{ documentType, title, fileName, uploadedByAccountId,<br/>submissionId? }
+
+    TDC->>TDS: createNewVersion(previousDocId, dto)
+
+    TDS->>DB_TD: SELECT WHERE id = previousDocId
+    DB_TD-->>TDS: TransactionDocumentEntity v1<br/>{ id, versionNo:1, status:'uploaded', … }
+
+    TDS->>DB_TD: UPDATE transaction_documents<br/>SET status='SUPERSEDED'<br/>WHERE id = previousDocId
+    Note right of DB_TD: Old row retired —<br/>will not appear in active set query
+
+    TDS->>DB_TD: INSERT transaction_documents<br/>transaction_id (inherited)<br/>document_type (inherited)<br/>version_no = 2  (v1 + 1)<br/>previous_version_id → v1.id<br/>status='UPLOADED'<br/>workflow_step_id (inherited)<br/>due_at (inherited)<br/>uploaded_by_account_id (from dto)
+    DB_TD-->>TDS: TransactionDocumentEntity v2
+
+    TDS-->>TDC: v2
+    TDC-->>Web: 201 TransactionDocumentEntity (v2)
+    Web-->>Agent: "Document updated (v2)"
+
+    Note over Agent,DB_S: ══ Scenario 3 — Grouped Delivery Round (submission package) ══
+
+    participant DSC as TransactionDocumentsController<br/>POST /document-submissions
+    participant DB_S as transaction_document_submissions
+
+    Agent->>Web: Submit document package<br/>(multiple files as one delivery round)
+
+    Web->>DSC: POST /api/v1/document-submissions<br/>{ transactionId, submittedByPartyId?, notes? }
+
+    DSC->>TDS: createSubmission(dto)
+    TDS->>DB_S: SELECT MAX(submission_no)<br/>WHERE transaction_id = ?
+    DB_S-->>TDS: max = 1  (or null if first)
+    TDS->>DB_S: INSERT transaction_document_submissions<br/>transaction_id, submission_no=2<br/>status='PENDING'<br/>submitted_by_party_id, notes
+    DB_S-->>TDS: SubmissionEntity { id, submissionNo:2 }
+    TDS-->>DSC: submission
+    DSC-->>Web: 201 { id: submissionId, submissionNo: 2 }
+
+    loop For each document in the package
+        Web->>TDC: POST /api/v1/transaction-documents<br/>{ transactionId, documentType, title,<br/>submissionId, uploadedByAccountId, … }
+        TDC->>TDS: create(dto)
+        TDS->>DB_TD: INSERT transaction_documents<br/>submission_id → submissionId<br/>status='UPLOADED', version_no=1
+        DB_TD-->>TDS: TransactionDocumentEntity
+        TDS-->>TDC: document
+        TDC-->>Web: 201 TransactionDocumentEntity
+    end
+
+    Web-->>Agent: Package submitted (round 2, N documents)
+
+    Note over Agent,DB_S: ══ Scenario 4 — TC Reviews and Accepts Submission ══
+
+    actor TC as Transaction Coordinator
+    participant TCA as TransactionDocumentsController<br/>PATCH /document-submissions/:id/accept
+
+    TC->>Web: Accept submission round 2
+    Web->>TCA: PATCH /api/v1/document-submissions/:submissionId/accept
+
+    TCA->>TDS: acceptSubmission(submissionId)
+
+    TDS->>DB_S: UPDATE transaction_document_submissions<br/>SET status='SUPERSEDED'<br/>WHERE transaction_id = ? AND id != submissionId<br/>AND status != 'SUPERSEDED'
+    Note right of DB_S: All prior rounds marked superseded
+
+    TDS->>DB_S: UPDATE transaction_document_submissions<br/>SET status='ACCEPTED'<br/>WHERE id = submissionId
+    DB_S-->>TDS: SubmissionEntity { status:'ACCEPTED' }
+
+    TDS-->>TCA: submission
+    TCA-->>Web: 200 SubmissionEntity
+    Web-->>TC: "Submission accepted"

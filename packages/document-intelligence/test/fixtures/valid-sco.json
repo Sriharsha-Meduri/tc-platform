@@ -1,0 +1,45 @@
+{
+  "header": {
+    "property_address": "123 Main St",
+    "date": "2026-05-01",
+    "counter_offer_number": "1"
+  },
+  "parties": {
+    "buyer_names": ["John Buyer"],
+    "seller_names": ["Jane Seller"]
+  },
+  "offer_reference": {
+    "referenced_form_code": "RPA",
+    "referenced_offer_date": "2026-04-28",
+    "referenced_counter_offer_number": null
+  },
+  "counter_offer_terms": {
+    "other_terms_text": "Purchase price increased to $925,000",
+    "attached_addenda": []
+  },
+  "expiration": {
+    "expiration_date": "2026-05-04",
+    "expiration_time": "5:00",
+    "expiration_time_period": "PM",
+    "alternative_expiration_specified": false
+  },
+  "section_4_offer": {
+    "offeror_1_signature_date": "2026-05-01",
+    "offeror_2_signature_date": null
+  },
+  "section_5_acceptance": {
+    "subject_to_attached_counter_offer": false,
+    "acceptor_1_signature_date": "2026-05-02",
+    "acceptor_1_signature_time": "3:00",
+    "acceptor_1_signature_time_period": "PM",
+    "acceptor_2_signature_date": null,
+    "acceptor_2_signature_time": null,
+    "acceptor_2_signature_time_period": null
+  },
+  "confirmation_of_acceptance": {
+    "confirmation_initials": "JS",
+    "confirmation_date": "2026-05-02",
+    "confirmation_time": "3:30",
+    "confirmation_time_period": "PM"
+  }
+}

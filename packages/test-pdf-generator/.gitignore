@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+test/fixtures/**/*.pdf
+!test/fixtures/.gitkeep
+templates/*-decrypted.pdf
+templates/ca/*-decrypted.pdf
+

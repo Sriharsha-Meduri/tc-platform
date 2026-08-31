@@ -1,0 +1,321 @@
+---
+title: TC Platform — Entity Relationship Diagram
+---
+erDiagram
+
+  users {
+    uuid id PK
+    varchar email
+    varchar status
+    timestamptz email_verified_at
+    varchar verification_token
+    timestamptz created_at
+  }
+
+  accounts {
+    uuid id PK
+    uuid user_id FK
+    varchar display_name
+    varchar first_name
+    varchar last_name
+    varchar cell_phone
+    varchar organization_name
+    varchar status
+    timestamptz created_at
+  }
+
+  real_estate_organizations {
+    uuid id PK
+    varchar name
+    varchar type
+    varchar email_domain
+    varchar status
+    timestamptz created_at
+  }
+
+  organization_memberships {
+    uuid id PK
+    uuid organization_id FK
+    uuid account_id FK
+    varchar role
+    varchar access_scope
+    boolean is_primary
+    timestamptz created_at
+  }
+
+  real_estate_transactions {
+    uuid id PK
+    uuid organization_id FK
+    uuid created_by_account_id FK
+    uuid assigned_coordinator_account_id FK
+    varchar transaction_number
+    varchar transaction_type
+    varchar side
+    varchar status
+    varchar stage
+    varchar property_address_line1
+    varchar property_city
+    varchar property_state
+    numeric contract_price
+    timestamptz offer_accepted_at
+    timestamptz close_of_escrow_at
+    timestamptz created_at
+  }
+
+  contacts {
+    uuid id PK
+    varchar contact_type
+    varchar first_name
+    varchar last_name
+    varchar email
+    varchar phone
+    timestamptz created_at
+  }
+
+  transaction_parties {
+    uuid id PK
+    uuid transaction_id FK
+    uuid contact_id FK
+    uuid account_id FK
+    uuid organization_id FK
+    uuid delegated_by_party_id FK
+    varchar party_role
+    varchar display_name
+    varchar email
+    boolean is_primary
+    timestamptz created_at
+  }
+
+  transaction_document_submissions {
+    uuid id PK
+    uuid transaction_id FK
+    uuid submitted_by_party_id FK
+    int submission_no
+    varchar status
+    text notes
+    timestamptz created_at
+  }
+
+  transaction_documents {
+    uuid id PK
+    uuid transaction_id FK
+    uuid submission_id FK
+    uuid previous_version_id FK
+    uuid requested_from_party_id FK
+    uuid uploaded_by_account_id FK
+    uuid workflow_step_id FK
+    uuid ai_interaction_id FK
+    varchar document_type
+    varchar title
+    varchar status
+    int version_no
+    text storage_url
+    jsonb metadata_json
+    timestamptz due_at
+    timestamptz created_at
+  }
+
+  transaction_tasks {
+    uuid id PK
+    uuid transaction_id FK
+    uuid assigned_account_id FK
+    uuid depends_on_task_id FK
+    uuid workflow_step_id FK
+    varchar title
+    varchar status
+    varchar priority
+    varchar template_key
+    timestamptz due_at
+    timestamptz completed_at
+    timestamptz created_at
+  }
+
+  transaction_events {
+    uuid id PK
+    uuid transaction_id FK
+    varchar event_type
+    timestamptz event_date
+    varchar status
+    text notes
+    timestamptz created_at
+  }
+
+  transaction_journals {
+    uuid id PK
+    uuid transaction_id FK
+    uuid actor_account_id FK
+    varchar journal_type
+    varchar source
+    timestamptz event_at
+    varchar title
+    text body
+    varchar related_entity_type
+    uuid related_entity_id
+    timestamptz created_at
+  }
+
+  transaction_messages {
+    uuid id PK
+    uuid transaction_id FK
+    uuid workflow_step_id FK
+    varchar channel
+    varchar direction
+    varchar subject
+    varchar status
+    varchar provider_name
+    varchar provider_thread_id
+    timestamptz received_at
+    timestamptz created_at
+  }
+
+  transaction_workflow_templates {
+    uuid id PK
+    uuid organization_id FK
+    varchar name
+    varchar state_code
+    varchar transaction_type
+    varchar side
+    boolean is_system
+    boolean is_active
+    timestamptz created_at
+  }
+
+  transaction_workflow_template_steps {
+    uuid id PK
+    uuid template_id FK
+    varchar step_key
+    varchar step_name
+    varchar category
+    varchar responsible_role
+    int sort_order
+    boolean is_optional
+    int default_duration_days
+    timestamptz created_at
+  }
+
+  transaction_workflow_steps {
+    uuid id PK
+    uuid transaction_id FK
+    uuid template_step_id FK
+    varchar step_key
+    varchar step_name
+    varchar category
+    varchar responsible_role
+    int sort_order
+    varchar status
+    timestamptz due_at
+    timestamptz started_at
+    timestamptz completed_at
+    timestamptz created_at
+  }
+
+  transaction_form_templates {
+    uuid id PK
+    uuid organization_id FK
+    varchar name
+    varchar state_code
+    varchar transaction_type
+    varchar side
+    boolean is_system
+    timestamptz created_at
+  }
+
+  transaction_form_template_items {
+    uuid id PK
+    uuid template_id FK
+    varchar form_code
+    varchar form_name
+    varchar category
+    boolean is_required
+    int sort_order
+    timestamptz created_at
+  }
+
+  ai_interactions {
+    uuid id PK
+    uuid transaction_id FK
+    uuid actor_account_id FK
+    varchar model_name
+    varchar feature
+    text response_text
+    jsonb metadata_json
+    int prompt_tokens
+    int completion_tokens
+    numeric cost_usd
+    varchar status
+    timestamptz created_at
+  }
+
+  transaction_access_grants {
+    uuid id PK
+    uuid transaction_id FK
+    uuid account_id FK
+    uuid granted_by_account_id FK
+    varchar access_level
+    timestamptz granted_at
+    timestamptz expires_at
+    timestamptz revoked_at
+    timestamptz created_at
+  }
+
+  %% Identity
+  users ||--|| accounts : "1:1"
+  accounts ||--o{ organization_memberships : "member of"
+  real_estate_organizations ||--o{ organization_memberships : "has members"
+
+  %% Transaction core
+  real_estate_organizations ||--o{ real_estate_transactions : "owns"
+  accounts ||--o{ real_estate_transactions : "creates"
+  accounts ||--o{ real_estate_transactions : "coordinates"
+
+  %% Parties
+  real_estate_transactions ||--o{ transaction_parties : "has"
+  contacts ||--o{ transaction_parties : "referenced by"
+  accounts ||--o{ transaction_parties : "linked to"
+  real_estate_organizations ||--o{ transaction_parties : "org of"
+  transaction_parties ||--o| transaction_parties : "delegated by"
+
+  %% Documents + submissions
+  real_estate_transactions ||--o{ transaction_document_submissions : "has"
+  transaction_parties ||--o{ transaction_document_submissions : "submitted by"
+  transaction_document_submissions ||--o{ transaction_documents : "contains"
+  transaction_documents ||--o| transaction_documents : "previous version"
+  transaction_parties ||--o{ transaction_documents : "requested from"
+  accounts ||--o{ transaction_documents : "uploaded by"
+
+  %% Tasks
+  real_estate_transactions ||--o{ transaction_tasks : "has"
+  accounts ||--o{ transaction_tasks : "assigned to"
+  transaction_tasks ||--o| transaction_tasks : "depends on"
+
+  %% Events
+  real_estate_transactions ||--o{ transaction_events : "has"
+
+  %% Journal
+  real_estate_transactions ||--o{ transaction_journals : "logged in"
+  accounts ||--o{ transaction_journals : "actor"
+
+  %% Messages
+  real_estate_transactions ||--o{ transaction_messages : "has"
+
+  %% AI
+  real_estate_transactions ||--o{ ai_interactions : "triggers"
+  accounts ||--o{ ai_interactions : "actor"
+  ai_interactions ||--o{ transaction_documents : "extraction source"
+
+  %% Workflow
+  transaction_workflow_templates ||--o{ transaction_workflow_template_steps : "defines"
+  real_estate_transactions ||--o{ transaction_workflow_steps : "instantiates"
+  transaction_workflow_template_steps ||--o{ transaction_workflow_steps : "source of"
+
+  %% Workflow step scoping (cross-cutting)
+  transaction_workflow_steps ||--o{ transaction_documents : "scopes"
+  transaction_workflow_steps ||--o{ transaction_tasks : "scopes"
+  transaction_workflow_steps ||--o{ transaction_messages : "scopes"
+
+  %% Form templates
+  transaction_form_templates ||--o{ transaction_form_template_items : "contains"
+
+  %% Access grants
+  real_estate_transactions ||--o{ transaction_access_grants : "grants access"
+  accounts ||--o{ transaction_access_grants : "grantee"

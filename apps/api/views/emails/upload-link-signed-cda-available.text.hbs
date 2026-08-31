@@ -1,0 +1,19 @@
+Hello {{recipientName}},
+
+The signed Commission Disbursement Authorization (CDA) for the transaction at {{propertyAddress}} has been received.
+
+It's now available through your existing secure upload link — the same link you already have.
+
+View the signed CDA here: {{uploadUrl}}
+
+This is the same secure link originally sent to you — no login is required.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

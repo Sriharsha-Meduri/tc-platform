@@ -1,0 +1,127 @@
+{
+  "formCode": "RPA",
+  "formName": "Residential Purchase Agreement",
+  "data": {
+    "header": {
+      "date_prepared": "2026-02-26",
+      "property_address": "15982 Lasselle St.",
+      "assessor_parcel_number": "308632005",
+      "city": "Moreno Valley",
+      "county": "Riverside",
+      "zip_code": "92551"
+    },
+    "parties": {
+      "buyer_names": ["Varun Srivastava"],
+      "buyer_is_trust_or_entity": false,
+      "seller_names": ["Jeannette Gonzalez", "Xala Flores Esteban Roberto"],
+      "seller_is_trust_or_entity": false
+    },
+    "agency": {
+      "seller_brokerage": "Elevate Real Estate Agency",
+      "seller_brokerage_dre": "02014163",
+      "seller_agent": "AMY ZULENI GARCIA ORTEGA",
+      "seller_agent_dre": "02089679",
+      "buyer_brokerage": "Blue Lotus Reality",
+      "buyer_brokerage_dre": "02247722",
+      "buyer_agent": "Ashok Patil",
+      "buyer_agent_dre": "02055556",
+      "dual_agency": false,
+      "more_than_one_brokerage": false
+    },
+    "terms_of_purchase": {
+      "purchase_price": 451000,
+      "close_of_escrow_days": 30,
+      "close_of_escrow_date": null,
+      "initial_deposit_amount": 11000,
+      "initial_deposit_days": 3,
+      "initial_deposit_method": "Wire",
+      "increased_deposit_amount": null,
+      "increased_deposit_days": null,
+      "loan_amount_1": 361000,
+      "loan_type_1": "Conventional",
+      "loan_amount_2": null,
+      "additional_financing": null,
+      "balance_of_down_payment": 79000,
+      "seller_credit_amount": null,
+      "seller_credit_percentage": null,
+      "is_all_cash": false,
+      "verification_of_down_payment_days": 3,
+      "verification_of_loan_application_days": 3
+    },
+    "contingencies_and_time_periods": {
+      "loan_contingency_days": 17,
+      "loan_contingency_no_contingency": false,
+      "appraisal_contingency_days": 14,
+      "appraisal_contingency_no_contingency": false,
+      "investigation_of_property_days": 8,
+      "informational_access_days": 17,
+      "review_seller_documents_days": 17,
+      "preliminary_title_report_days": 17,
+      "common_interest_disclosures_days": 17,
+      "review_leased_liened_items_days": 17,
+      "sale_of_buyers_property_attached": false,
+      "buyer_notice_to_perform_days": 2,
+      "seller_notice_to_perform_days": 2
+    },
+    "allocation_of_costs": {
+      "natural_hazard_disclosure": "Seller",
+      "environmental_report": null,
+      "wood_destroying_pest_inspection": "Seller",
+      "septic_inspection": null,
+      "well_inspection": null,
+      "smoke_alarm_co_device_installation": "Seller",
+      "escrow_fees": "Both",
+      "escrow_company_name": null,
+      "title_insurance": "Seller",
+      "title_company_name": null,
+      "county_transfer_tax": "Seller",
+      "city_transfer_tax": "Seller",
+      "hoa_fee_for_preparing_disclosures": "Seller",
+      "hoa_certification_fee": "Buyer",
+      "hoa_transfer_fee": "Seller",
+      "home_warranty_plan": "Seller",
+      "home_warranty_cost_not_to_exceed": 750,
+      "private_transfer_fee": "Seller"
+    },
+    "items_included_and_excluded": {
+      "stoves_ovens": true,
+      "refrigerators": true,
+      "wine_refrigerators": true,
+      "washers": true,
+      "dryers": true,
+      "additional_items_included": null,
+      "items_excluded": null
+    },
+    "possession_and_occupancy": {
+      "possession_delivered": "At Close of Escrow",
+      "buyer_intends_to_occupy": true,
+      "tenant_occupied_property_addendum_attached": false,
+      "seller_occupancy_addendum_attached": false
+    },
+    "other_addenda_and_advisories": {
+      "probate_advisory_attached": false,
+      "trust_advisory_attached": false,
+      "short_sale_addendum_attached": false,
+      "manufactured_home_addendum_attached": false,
+      "buyer_intent_to_exchange": false,
+      "seller_intent_to_exchange": false,
+      "additional_addenda_checked": false,
+      "additional_addenda_description": null
+    },
+    "offer_expiration": {
+      "expiration_date": null,
+      "expiration_time": null
+    },
+    "liquidated_damages_and_arbitration": {
+      "liquidated_damages_initialed_buyer": false,
+      "liquidated_damages_initialed_seller": false,
+      "arbitration_initialed_buyer": false,
+      "arbitration_initialed_seller": false
+    },
+    "seller_acceptance": {
+      "accepted_subject_to_counter_offer": true,
+      "seller_signature_date": "2026-03-06",
+      "buyer_signature_date": "2026-02-26"
+    }
+  }
+}

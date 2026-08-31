@@ -1,0 +1,17 @@
+Hello {{recipientName}},
+
+You may use the secure link below to upload additional documents for the transaction at {{propertyAddress}}.
+
+{{uploadUrl}}
+
+No login is required. This link is unique to this transaction and intended only for you. Please do not forward it to others.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

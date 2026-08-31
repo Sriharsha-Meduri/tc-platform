@@ -1,0 +1,59 @@
+{
+  "documentType": "Residential Purchase Agreement",
+  "documentSubtypes": ["Purchase Agreement"],
+  "sourceLanguage": "en",
+  "property": {
+    "streetAddress": "123 Main St",
+    "city": "Los Angeles",
+    "state": "CA",
+    "postalCode": "90001",
+    "county": "Los Angeles",
+    "apn": "5543-021-015",
+    "mlsNumber": null,
+    "legalDescription": null
+  },
+  "transaction": {
+    "purchasePrice": 900000,
+    "earnestMoneyAmount": 18000,
+    "offerDate": "2026-01-01",
+    "acceptanceDate": "2026-01-02",
+    "closingDate": "2026-03-01",
+    "possessionDate": null,
+    "financingType": "Conventional",
+    "loanAmount": 720000,
+    "occupancyType": null
+  },
+  "parties": {
+    "buyers": [{ "fullName": "John Buyer", "email": null, "phone": null, "mailingAddress": null, "signaturePresent": true, "confidence": 0.95 }],
+    "sellers": [{ "fullName": "Jane Seller", "email": null, "phone": null, "mailingAddress": null, "signaturePresent": true, "confidence": 0.95 }],
+    "buyerAgents": [{ "fullName": "Agent A", "email": null, "phone": null, "licenseNumber": "CA-12345", "companyName": "Realty", "confidence": 0.9 }],
+    "listingAgents": [{ "fullName": "Agent B", "email": null, "phone": null, "licenseNumber": "CA-67890", "companyName": "Realty", "confidence": 0.9 }],
+    "brokers": [],
+    "escrowCompanies": [{ "companyName": "Pacific Escrow", "contactName": null, "email": null, "phone": null, "confidence": 0.9 }],
+    "lenders": [],
+    "attorneys": [],
+    "otherParties": []
+  },
+  "contractTerms": {
+    "inspectionContingencyDays": 17,
+    "loanContingencyDays": 21,
+    "appraisalContingencyDays": 17,
+    "disclosuresDueDays": 7,
+    "otherDeadlines": []
+  },
+  "formsAndDisclosures": [],
+  "signatures": {
+    "buyerSigned": true,
+    "sellerSigned": true,
+    "signedParties": ["John Buyer", "Jane Seller"],
+    "missingSignatures": []
+  },
+  "extractionWarnings": [],
+  "confidenceSummary": {
+    "overall": 0.95,
+    "property": 0.95,
+    "transaction": 0.95,
+    "parties": 0.95,
+    "formsAndDisclosures": null
+  }
+}

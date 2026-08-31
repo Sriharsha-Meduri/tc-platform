@@ -1,0 +1,27 @@
+Hello {{name}},
+
+A fully executed Purchase Agreement has been received for the following transaction. The executed contract documents are attached for your records.
+
+Transaction Details:
+Property: {{address}}
+Transaction #: {{txNumber}}
+{{#if purchasePrice}}Purchase Price: {{purchasePrice}}{{/if}}
+{{#if closeDate}}Close of Escrow: {{closeDate}}{{/if}}
+
+Attached Documents:
+- Fully Executed Purchase Agreement (RPA)
+{{#if hasCounterOffers}}
+- Fully Executed Counter Offer(s)
+{{/if}}
+{{#if escrowInfo}}
+- Escrow Information: {{escrowInfo}}
+{{/if}}
+
+Action Requested:
+1. Confirm receipt of the attached contract documents
+2. Confirm the loan process has been initiated
+3. Provide ongoing loan status updates throughout the transaction
+
+MyTC will assist in tracking important financing milestones. Please notify us promptly of any issues affecting contractual deadlines or the scheduled closing date.
+
+TC Platform — Real Estate Transaction Coordination

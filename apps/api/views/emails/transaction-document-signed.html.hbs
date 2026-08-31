@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:sans-serif;background:#f8fafc;margin:0;padding:32px;">
+  <div style="max-width:640px;margin:0 auto;background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="display:inline-block;background:#1d4ed8;color:#fff;font-size:22px;font-weight:700;padding:12px 20px;border-radius:10px;">TC</div>
+    </div>
+    <h2 style="color:#111827;margin:0 0 16px;">Document Signed via DocuSign</h2>
+    <p style="color:#374151;margin:0 0 12px;">Hello,</p>
+    <p style="color:#374151;margin:0 0 12px;">
+      {{#if propertyAddress}}For the transaction at <strong>{{propertyAddress}}</strong>, the {{else}}The {{/if}}following document has been fully signed through DocuSign:
+    </p>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin:0 0 20px;">
+      <p style="margin:0 0 4px;font-weight:700;color:#166534;">{{documentName}}</p>
+      {{#if formCode}}<p style="margin:0;font-size:13px;color:#15803d;">Form: {{formCode}}</p>{{/if}}
+    </div>
+
+    <p style="color:#374151;margin:0 0 20px;">The signed copy has been saved to the transaction and now replaces the unsigned version everywhere it appears — the secure upload links and the transaction document list will show the signed copy.</p>
+
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="display:inline-block;background:#1d4ed8;color:#fff;font-size:14px;font-weight:700;padding:8px 14px;border-radius:8px;">myTC</div>
+      <p style="color:#6b7280;font-size:12px;margin:6px 0 0;">Automating Every Step After Contract Acceptance</p>
+    </div>
+    <div style="border-top:1px solid #e5e7eb;padding-top:12px;">
+      {{#if transactionId}}<p style="color:#9ca3af;font-size:11px;margin:0;">Transaction ID: {{transactionId}}</p>{{/if}}
+    </div>
+  </div>
+</body>
+</html>

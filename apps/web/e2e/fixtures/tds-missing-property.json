@@ -1,0 +1,16 @@
+{
+  "header": {
+    "property_address": null,
+    "city": null,
+    "county": null
+  },
+  "section_II_sellers_information": {
+    "B_defects_malfunctions": {
+      "aware_of_defects": false
+    }
+  },
+  "signatures": {
+    "seller_signature_page_2": false,
+    "seller_signature_page_3": false
+  }
+}

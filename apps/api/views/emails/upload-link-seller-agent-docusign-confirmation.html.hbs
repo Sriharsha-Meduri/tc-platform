@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:sans-serif;background:#f8fafc;margin:0;padding:32px;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+      <div style="background:#1d4ed8;color:#fff;font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;letter-spacing:.5px;">TC</div>
+      <span style="color:#6b7280;font-size:14px;">Transaction Coordination Platform</span>
+    </div>
+
+    <h2 style="color:#111827;font-size:20px;margin:0 0 20px;">Hello {{recipientName}},</h2>
+
+    <p style="color:#111827;font-size:14px;margin:0 0 20px;line-height:1.6;">
+      All required documents for the transaction at <strong>{{propertyAddress}}</strong> have been uploaded and have passed validation. They're ready to be sent to the Buyer for signature.
+    </p>
+
+    <p style="color:#111827;font-size:14px;margin:0 0 20px;line-height:1.6;">
+      Before anything is sent, we need your confirmation. Once you confirm:
+    </p>
+
+    <ul style="color:#111827;font-size:14px;margin:0 0 20px;padding-left:18px;line-height:1.8;">
+      <li>These documents will be sent to the Buyer for electronic signature via DocuSign.</li>
+      <li>The Buyer's Agent will be copied on the envelope with view-only access — they will not be asked to sign or initial anything.</li>
+    </ul>
+
+    <p style="color:#111827;font-size:14px;margin:0 0 20px;line-height:1.6;">
+      <strong>Please review these documents with your Buyer Agent before signing.</strong>
+    </p>
+
+    <a href="{{uploadUrl}}"
+       style="display:block;text-align:center;background:#1d4ed8;color:#fff;font-weight:600;padding:14px 24px;border-radius:8px;text-decoration:none;font-size:15px;margin:24px 0 20px;">
+      Review &amp; Confirm Sending
+    </a>
+
+    <p style="color:#6b7280;font-size:13px;margin:0 0 24px;line-height:1.6;">
+      This is the same secure link originally sent to you — no login is required. Nothing will be sent to the Buyer until you confirm on that page.
+    </p>
+
+    <p style="color:#111827;font-size:14px;margin:0;">
+      Thank you,<br>
+      {{#if tcName}}{{tcName}}<br>{{/if}}
+      {{#if tcName}}Transaction Coordinator<br>{{/if}}
+      {{#if transactionEmail}}{{transactionEmail}}<br>{{/if}}
+      {{#if tcPhone}}{{tcPhone}}{{/if}}
+    </p>
+
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+    {{#if transactionId}}<p style="color:#9ca3af;font-size:11px;margin:0;text-align:center;">Transaction ID: {{transactionId}}</p>{{/if}}
+    {{#if tcName}}<p style="color:#9ca3af;font-size:11px;margin:2px 0 0;text-align:center;">Transaction Coordinator: {{tcName}}</p>{{/if}}
+    {{#if transactionEmail}}<p style="color:#9ca3af;font-size:11px;margin:2px 0 0;text-align:center;">Transaction Email: {{transactionEmail}}</p>{{/if}}
+    <p style="color:#9ca3af;font-size:12px;margin:0;text-align:center;">TC Platform &mdash; Real Estate Transaction Coordination</p>
+  </div>
+</body>
+</html>

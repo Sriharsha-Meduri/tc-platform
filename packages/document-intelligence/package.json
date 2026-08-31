@@ -1,0 +1,30 @@
+{
+  "name": "@tc/document-intelligence",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && mkdir -p dist/cda/templates && cp src/cda/templates/*.pdf dist/cda/templates/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "cda:mapper": "node src/cda/tools/coordinate-mapper/server.ts",
+    "test:unit": "vitest run test/unit",
+    "test:watch:unit": "vitest test/unit",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
+    "@google/generative-ai": "^0.24.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "devDependencies": {
+    "@tc/config": "workspace:*",
+    "@types/node": "^20.0.0",
+    "@vitest/ui": "^1.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

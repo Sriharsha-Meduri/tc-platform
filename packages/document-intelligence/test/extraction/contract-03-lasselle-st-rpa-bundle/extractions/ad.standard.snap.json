@@ -1,0 +1,49 @@
+{
+  "formCode": "AD",
+  "formName": "Disclosure Regarding Real Estate Agency Relationships",
+  "data": {
+    "property_address": null,
+    "date": "2026-02-26",
+    "listing_agent": {
+      "name": "Ashok Patil",
+      "dre_license": "02247722",
+      "brokerage_name": "Blue Lotus Reality",
+      "brokerage_dre": null,
+      "is_seller_agent": false,
+      "is_dual_agent": false
+    },
+    "selling_agent": {
+      "name": "Ashok Patil",
+      "dre_license": "02055556",
+      "brokerage_name": "Blue Lotus Reality",
+      "brokerage_dre": null,
+      "is_buyer_agent": false,
+      "is_dual_agent": false,
+      "is_same_as_listing_agent": true
+    },
+    "agency_confirmation": {
+      "listing_agent_represents": null,
+      "selling_agent_represents": null
+    },
+    "signatures": {
+      "seller_signed": false,
+      "seller_signature_date": null,
+      "buyer_signed": true,
+      "buyer_signature_date": "2026-02-26",
+      "listing_agent_signed": true,
+      "listing_agent_signature_date": "2026-02-26",
+      "selling_agent_signed": true,
+      "selling_agent_signature_date": "2026-02-26"
+    },
+    "extractionWarnings": [
+      "Listing Agent DRE License is missing.",
+      "Selling Agent Brokerage DRE is missing.",
+      "Listing Agent Brokerage DRE is missing.",
+      "Seller signature is missing.",
+      "The agency confirmation section was not explicitly filled out, inferring relationships based on agent and buyer signatures.",
+      "The form does not explicitly state whether the agent represents the Seller exclusively, Buyer exclusively, or both.",
+      "The listing agent's representation (Seller's Agent vs. Dual Agent) is not explicitly checked in the provided document.",
+      "The selling agent's representation (Buyer's Agent vs. Dual Agent) is not explicitly checked in the provided document."
+    ]
+  }
+}

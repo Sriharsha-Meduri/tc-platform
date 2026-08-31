@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  --tc-brand: #1d4ed8;
+  --tc-brand-hover: #1e40af;
+}
+
+/* Respect users who prefer reduced motion: calm animations and transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

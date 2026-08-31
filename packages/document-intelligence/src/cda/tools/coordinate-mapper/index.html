@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CDA Coordinate Mapper</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 20px;
+      background: #0f172a; color: #fff;
+      position: sticky; top: 0; z-index: 10;
+    }
+    header h1 { font-size: 16px; margin: 0; }
+    header #status { font-size: 13px; margin-left: auto; }
+    #save {
+      background: #10b981; color: #fff; border: 0; border-radius: 6px;
+      padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    #save:hover { background: #059669; }
+    main { display: flex; gap: 20px; padding: 20px; align-items: flex-start; }
+    aside {
+      width: 340px; flex: 0 0 340px;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 16px; max-height: calc(100vh - 80px); overflow-y: auto;
+    }
+    aside h2 { font-size: 14px; margin: 0 0 10px; }
+    aside select[name="field"] {
+      width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;
+      font-size: 13px; margin-bottom: 10px; background: #fff;
+    }
+    .field-create { margin-bottom: 8px; }
+    .field-create input {
+      width: 100%; padding: 7px 8px; border: 1px solid #cbd5e1; border-radius: 6px;
+      font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin-bottom: 6px;
+    }
+    .field-create-row { display: flex; align-items: center; gap: 6px; }
+    .field-create-row label { font-size: 12px; color: #64748b; }
+    .field-create-row select {
+      flex: 1; min-width: 0; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;
+      font-size: 13px; background: #fff;
+    }
+    #add-field {
+      background: #0ea5e9; color: #fff; border: 0; border-radius: 6px;
+      padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    #add-field:hover { background: #0284c7; }
+    #delete-field {
+      width: 100%; margin-bottom: 12px; padding: 7px; border: 1px solid #fca5a5;
+      background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 12px;
+      font-weight: 600; cursor: pointer;
+    }
+    #delete-field:hover { background: #fee2e2; }
+    .hint { font-size: 12px; color: #64748b; margin: 0 0 14px; }
+    #coord-list { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #64748b; }
+    .coord-row {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px;
+    }
+    .coord-row label { display: flex; flex-direction: column; font-size: 10px; color: #94a3b8; }
+    .coord-row input {
+      width: 54px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px;
+    }
+    .coord-row select {
+      padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; background: #fff;
+    }
+    .coord-row .del {
+      border: 0; background: transparent; color: #dc2626; font-size: 18px;
+      cursor: pointer; margin-left: auto; padding: 0 4px;
+    }
+    #pages { display: flex; flex-direction: column; gap: 24px; }
+    .page-wrap {
+      position: relative; background: #fff; border-radius: 4px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12); cursor: crosshair;
+    }
+    .page-wrap canvas { display: block; }
+    .page-label {
+      position: absolute; top: 8px; left: 10px; font-size: 12px; font-weight: 700;
+      color: #0f172a; background: rgba(255,255,255,0.85); padding: 2px 8px; border-radius: 4px;
+    }
+    .marker {
+      position: absolute; width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid; transform: translate(-50%, -50%); cursor: pointer; z-index: 5;
+    }
+    .marker span {
+      position: absolute; left: 14px; top: -6px; white-space: nowrap;
+      font-size: 10px; font-weight: 700; color: #fff; padding: 1px 5px; border-radius: 3px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CDA Coordinate Mapper</h1>
+    <span id="status">Loading…</span>
+    <button id="save">Save / Apply to code</button>
+  </header>
+  <main>
+    <aside>
+      <h2>CDA Field</h2>
+      <select name="field"></select>
+      <div class="field-create">
+        <input type="text" id="new-field" placeholder="newFieldName" spellcheck="false" />
+        <div class="field-create-row">
+          <label for="new-field-type">Type</label>
+          <select id="new-field-type">
+            <option value="text">text</option>
+            <option value="currency">currency</option>
+            <option value="date">date</option>
+            <option value="signature">signature</option>
+          </select>
+          <button id="add-field" title="Create a new CDA field">Add</button>
+        </div>
+      </div>
+      <button id="delete-field" class="danger" style="display:none" title="Remove this custom field from the code">
+        Delete selected field
+      </button>
+      <p class="hint">
+        Select a field, then click anywhere on the PDF to add a coordinate.
+        Click an existing marker to jump back to that field. Type a name,
+        pick its type, and press <b>Add</b> to create a new field (custom
+        fields show a <b>*</b>; new coordinates default to the field's type).
+        Coordinates use PDF points with a bottom-left Y origin (pdf-lib
+        convention).
+      </p>
+      <div id="coord-list"></div>
+    </aside>
+    <section id="pages"></section>
+  </main>
+  <script type="module" src="/coordinate-mapper.js"></script>
+</body>
+</html>

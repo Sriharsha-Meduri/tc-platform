@@ -1,0 +1,35 @@
+{
+  "formCode": "FHDA",
+  "formName": null,
+  "data": {
+    "documentType": "Fair Housing and Discrimination Advisory",
+    "property": {
+      "streetAddress": null,
+      "city": null,
+      "state": null,
+      "postalCode": null,
+      "county": null,
+      "apn": null
+    },
+    "transaction": {
+      "purchasePrice": null,
+      "earnestMoneyAmount": null,
+      "offerDate": null,
+      "closingDate": null,
+      "financingType": null,
+      "loanAmount": null
+    },
+    "parties": {
+      "buyers": [
+        { "fullName": "Varun Srivastava", "signaturePresent": true }
+      ],
+      "sellers": [
+        { "fullName": "Jeannette Gonzalez", "signaturePresent": true },
+        { "fullName": "Xala Flores Esteban Roberto", "signaturePresent": true }
+      ]
+    },
+    "extractionWarnings": [
+      "Generic schema used — no FHDA form definition registered."
+    ]
+  }
+}

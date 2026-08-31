@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:sans-serif;background:#f8fafc;margin:0;padding:32px;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+      <div style="background:#1d4ed8;color:#fff;font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;letter-spacing:.5px;">TC</div>
+      <span style="color:#6b7280;font-size:14px;">Transaction Coordination Platform</span>
+    </div>
+
+    <h2 style="color:#111827;font-size:20px;margin:0 0 4px;">Hello {{name}},</h2>
+
+    <p style="color:#111827;font-size:14px;margin:0 0 16px;">
+      A fully executed Purchase Agreement has been received for the following transaction. The executed contract documents are attached for your records.
+    </p>
+
+    <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-bottom:24px;">
+      <p style="margin:0 0 6px;font-size:13px;color:#0369a1;font-weight:600;">Transaction Details</p>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr><td style="padding:4px 0;color:#6b7280;width:120px;">Property</td><td style="padding:4px 0;color:#111827;font-weight:500;">{{address}}</td></tr>
+        <tr><td style="padding:4px 0;color:#6b7280;">Transaction #</td><td style="padding:4px 0;color:#111827;font-weight:500;">{{txNumber}}</td></tr>
+        {{#if purchasePrice}}
+        <tr><td style="padding:4px 0;color:#6b7280;">Purchase Price</td><td style="padding:4px 0;color:#111827;font-weight:500;">{{purchasePrice}}</td></tr>
+        {{/if}}
+        {{#if closeDate}}
+        <tr><td style="padding:4px 0;color:#6b7280;">Close of Escrow</td><td style="padding:4px 0;color:#111827;font-weight:500;">{{closeDate}}</td></tr>
+        {{/if}}
+      </table>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:24px;">
+      <p style="margin:0 0 6px;font-size:13px;color:#166534;font-weight:600;">Attached Documents</p>
+      <ul style="margin:0;padding-left:18px;color:#166534;font-size:13px;line-height:1.8;">
+        <li>Fully Executed Purchase Agreement (RPA)</li>
+        {{#if hasCounterOffers}}
+        <li>Fully Executed Counter Offer(s)</li>
+        {{/if}}
+        {{#if escrowInfo}}
+        <li>Escrow Information — {{escrowInfo}}</li>
+        {{/if}}
+      </ul>
+    </div>
+
+    <div style="background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:16px;margin-bottom:24px;">
+      <p style="margin:0 0 6px;font-size:13px;color:#92400e;font-weight:600;">Action Requested</p>
+      <ol style="margin:0;padding-left:18px;color:#92400e;font-size:13px;line-height:1.8;">
+        <li>Confirm receipt of the attached contract documents</li>
+        <li>Confirm the loan process has been initiated</li>
+        <li>Provide ongoing loan status updates throughout the transaction</li>
+      </ol>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;margin:0 0 12px;">
+      MyTC will assist in tracking important financing milestones throughout the transaction. Future reminders and communications may be sent regarding loan processing, outstanding conditions, appraisal scheduling, loan approval, closing preparation, and funding status.
+    </p>
+
+    <p style="color:#6b7280;font-size:13px;margin:0;">
+      Please notify us promptly of any issues that could affect contractual deadlines or the scheduled closing date.
+    </p>
+
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+    <p style="color:#9ca3af;font-size:12px;margin:0;text-align:center;">TC Platform &mdash; Real Estate Transaction Coordination</p>
+  </div>
+</body>
+</html>

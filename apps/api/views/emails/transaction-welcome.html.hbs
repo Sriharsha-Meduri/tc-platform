@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:sans-serif;background:#f8fafc;margin:0;padding:32px;">
+  <div style="max-width:640px;margin:0 auto;background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="display:inline-block;background:#1d4ed8;color:#fff;font-size:22px;font-weight:700;padding:12px 20px;border-radius:10px;">TC</div>
+    </div>
+    <h2 style="color:#111827;margin:0 0 16px;">Welcome to Escrow &amp; Transaction Timeline</h2>
+    <p style="color:#374151;margin:0 0 12px;">Hello,</p>
+    <p style="color:#374151;margin:0 0 12px;">This is to confirm that the transaction at <strong>{{propertyAddress}}</strong> has entered escrow. This email and the timeline below are being shared with all parties on the transaction.</p>
+
+    {{#if tcName}}
+    <p style="color:#374151;margin:0 0 12px;">My name is <strong>{{tcName}}</strong>, and I will be serving as the Transaction Coordinator for this transaction on behalf of <strong>{{buyerAgentName}}</strong>.</p>
+    {{else}}
+    <p style="color:#374151;margin:0 0 12px;">I will be serving as the Transaction Coordinator for this transaction on behalf of <strong>{{buyerAgentName}}</strong>.</p>
+    {{/if}}
+    <p style="color:#374151;margin:0 0 20px;">I will help coordinate the transaction, monitor important deadlines, and ensure that all required documents are completed before closing. Please include me on email communications involving disclosures, reports, escrow documents, or other transaction-related matters.</p>
+
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px 20px;margin:0 0 20px;">
+      <p style="margin:0 0 6px;font-weight:700;color:#1e3a8a;">How to Submit Documents</p>
+      <p style="margin:0;font-size:13px;color:#1e40af;">The Buyer Agent and Seller Agent will each receive a <strong>separate email with a secure upload link</strong> for submitting transaction documents. <strong>Please do not send or attach documents by replying to this Welcome Email.</strong> Use the secure upload link provided in the separate email instead.</p>
+    </div>
+
+    <h3 style="color:#111827;margin:0 0 8px;">Transaction Timeline</h3>
+    <p style="color:#6b7280;font-size:13px;margin:0 0 16px;">Please note that, where applicable under the contract, deadlines falling on a weekend or holiday will be adjusted to the next business day. Below is the tentative timeline for the transaction:</p>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <thead>
+        <tr>
+          <th style="border:1px solid #e5e7eb;background:#f9fafb;padding:10px 12px;text-align:left;font-size:13px;color:#111827;">Transaction Milestone</th>
+          <th style="border:1px solid #e5e7eb;background:#f9fafb;padding:10px 12px;text-align:left;font-size:13px;color:#111827;">Deadline</th>
+          <th style="border:1px solid #e5e7eb;background:#f9fafb;padding:10px 12px;text-align:left;font-size:13px;color:#111827;">Contract Timeframe</th>
+          <th style="border:1px solid #e5e7eb;background:#f9fafb;padding:10px 12px;text-align:left;font-size:13px;color:#111827;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each rows}}
+        <tr>
+          <td style="border:1px solid #e5e7eb;padding:10px 12px;font-size:13px;color:#374151;">{{label}}</td>
+          <td style="border:1px solid #e5e7eb;padding:10px 12px;font-size:13px;color:#374151;">{{deadline}}</td>
+          <td style="border:1px solid #e5e7eb;padding:10px 12px;font-size:13px;color:#374151;">{{timeframe}}</td>
+          <td style="border:1px solid #e5e7eb;padding:10px 12px;font-size:13px;color:#374151;">
+            {{status}}
+          </td>
+        </tr>
+        {{else}}
+        <tr>
+          <td colspan="4" style="border:1px solid #e5e7eb;padding:10px 12px;font-size:13px;color:#9ca3af;">Timeline details will be provided as documents are finalized.</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <p style="color:#374151;margin:0 0 12px;">Your agent and transaction coordinator will provide additional instructions as each milestone approaches. Please review this timeline and notify us promptly if any information appears incorrect.</p>
+    <p style="color:#374151;margin:0 0 20px;">Please feel free to contact me with any questions during the transaction. You can also reply to this email for questions — your message will be attached to the transaction thread (please do not attach documents to this reply; see the upload-link instructions above).</p>
+
+    <div style="background:#f1f5f9;border-radius:8px;padding:16px 20px;margin-bottom:24px;">
+      {{#if tcName}}<p style="margin:0 0 4px;font-weight:600;color:#111827;">{{tcName}}</p>{{/if}}
+      <p style="margin:0;font-size:13px;color:#6b7280;">Transaction Coordinator for {{buyerAgentName}}</p>
+      {{#if tcPhone}}<p style="margin:4px 0 0;font-size:13px;color:#6b7280;">{{tcPhone}}</p>{{/if}}
+      {{#if transactionEmail}}<p style="margin:2px 0 0;font-size:13px;color:#6b7280;">{{transactionEmail}}</p>{{/if}}
+    </div>
+
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="display:inline-block;background:#1d4ed8;color:#fff;font-size:14px;font-weight:700;padding:8px 14px;border-radius:8px;">myTC</div>
+      <p style="color:#6b7280;font-size:12px;margin:6px 0 0;">Automating Every Step After Contract Acceptance</p>
+    </div>
+    <p style="color:#9ca3af;font-size:12px;margin:0 0 12px;">This tentative timeline is based on the transaction documents currently available. Any fully executed counteroffer, amendment, extension, or cancellation may change these dates. The fully executed contract documents control.</p>
+    <div style="border-top:1px solid #e5e7eb;padding-top:12px;">
+      {{#if transactionId}}<p style="color:#9ca3af;font-size:11px;margin:0;">Transaction ID: {{transactionId}}</p>{{/if}}
+      {{#if tcName}}<p style="color:#9ca3af;font-size:11px;margin:2px 0 0;">Transaction Coordinator: {{tcName}}</p>{{/if}}
+      {{#if transactionEmail}}<p style="color:#9ca3af;font-size:11px;margin:2px 0 0;">Transaction Email: {{transactionEmail}}</p>{{/if}}
+    </div>
+  </div>
+</body>
+</html>

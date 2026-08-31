@@ -1,0 +1,19 @@
+{
+  "header": {
+    "property_address": "123 Main St",
+    "city": "Los Angeles",
+    "county": "Los Angeles"
+  },
+  "section_II_sellers_information": {
+    "B_defects_malfunctions": {
+      "aware_of_defects": false
+    }
+  },
+  "signatures": {
+    "seller_signature_page_2": true,
+    "seller_signature_page_2_date": "2026-04-15",
+    "seller_signature_page_3": false,
+    "buyer_signature": true,
+    "buyer_signature_date": "2026-04-15"
+  }
+}

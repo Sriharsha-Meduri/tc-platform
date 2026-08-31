@@ -1,0 +1,41 @@
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+  <h1 style="margin:0;">Organizations</h1>
+  <a href="/admin/organizations/create" class="btn btn-approve" style="text-decoration:none;padding:8px 16px;font-size:13px;">+ Create Organization</a>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>License #</th>
+      <th>State</th>
+      <th>Status</th>
+      <th>Created</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each organizations}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>{{this.type}}</td>
+      <td>{{this.licenseNumber}}</td>
+      <td>{{this.state}}</td>
+      <td class="status-{{this.status}}">{{this.status}}</td>
+      <td>{{this.createdAt}}</td>
+      <td>
+        {{#if (eq this.status 'pending_approval')}}
+        <form action="/admin/organizations/{{this.id}}/approve" method="POST" style="display:inline">
+          <button type="submit" class="btn btn-approve">Approve</button>
+        </form>
+        <form action="/admin/organizations/{{this.id}}/reject" method="POST" style="display:inline">
+          <button type="submit" class="btn btn-reject">Reject</button>
+        </form>
+        {{else}}
+        <span class="muted">—</span>
+        {{/if}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

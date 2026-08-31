@@ -1,0 +1,32 @@
+<h1>Users</h1>
+<table>
+  <thead>
+    <tr><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Verified</th><th>Created</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <td>{{this.email}}</td>
+      <td>{{this.phone}}</td>
+      <td><code>{{this.role}}</code></td>
+      <td class="status-{{this.status}}">{{this.status}}</td>
+      <td>{{#if this.emailVerifiedAt}}{{this.emailVerifiedAt}}{{else}}<span class="muted">—</span>{{/if}}</td>
+      <td class="nowrap">{{this.createdAt}}</td>
+      <td>
+        <button class="btn btn-delete" onclick="deleteUser('{{this.id}}', '{{this.email}}')">Delete</button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<script>
+async function deleteUser(id, email) {
+  if (!confirm('Delete ' + email + '? This cannot be undone.')) return;
+  try {
+    const res = await fetch('/admin/api/users/' + id, { method: 'DELETE' });
+    if (!res.ok) { const b = await res.json().catch(() => ({})); alert(b.message || 'Failed'); return; }
+    location.reload();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+</script>

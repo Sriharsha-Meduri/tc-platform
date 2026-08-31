@@ -1,0 +1,59 @@
+sequenceDiagram
+    autonumber
+
+    actor Agent as Buyer Agent
+    participant Web as Next.js Web<br/>(apps/web)
+    participant Auth as AuthController<br/>POST /auth/register
+    participant AS as AuthService
+    participant US as UsersService
+    participant ACS as AccountsService
+    participant DB_U as users table
+    participant DB_A as accounts table
+    participant MG as Mailgun
+
+    Agent->>Web: Fill registration form<br/>(email, password, name, phone, address)
+    Web->>Auth: POST /api/v1/auth/register<br/>{ email, password, firstName, lastName,<br/>cellPhone, organizationName, address… }
+
+    Auth->>AS: register(input)
+
+    AS->>US: findByEmail(email)
+    US->>DB_U: SELECT WHERE email = ?
+    DB_U-->>US: null (no duplicate)
+    US-->>AS: null
+
+    AS->>US: create({ email, password, phone })
+    US->>DB_U: INSERT users<br/>email, password_hash (bcrypt), phone,<br/>status='active'
+    DB_U-->>US: UserEntity { id, email, … }
+    US-->>AS: user
+
+    AS->>DB_U: UPDATE users SET<br/>status='pending',<br/>verification_token=<random 32-byte hex>,<br/>verification_token_expires_at=now+24h<br/>WHERE id = user.id
+
+    AS->>ACS: create({ userId, displayName, firstName,<br/>lastName, cellPhone, officePhone,<br/>organizationName, address… })
+    ACS->>DB_A: INSERT accounts<br/>user_id, display_name, first_name,<br/>last_name, cell_phone, office_phone,<br/>organization_name, address fields
+    DB_A-->>ACS: AccountEntity
+    ACS-->>AS: account
+
+    alt CREATE_ACCT_EMAIL_NOTIFY_ENABLED = true
+        AS->>MG: sendVerificationEmail(email, firstName,<br/>verificationUrl)
+        MG-->>AS: 200 OK
+    else Email notifications disabled
+        AS->>AS: console.log(verificationUrl)
+    end
+
+    AS-->>Auth: { message: "Registration successful…" }
+    Auth-->>Web: 201 { message }
+    Web-->>Agent: "Check your email to verify your account"
+
+    Note over Agent,MG: ── Email verification ──
+
+    Agent->>Web: Click verification link<br/>/verify-email?token=<hex>
+    Web->>Auth: GET /api/v1/auth/verify-email?token=<hex>
+    Auth->>AS: verifyEmail(token)
+    AS->>DB_U: SELECT WHERE verification_token = token
+    DB_U-->>AS: UserEntity
+
+    AS->>DB_U: UPDATE users SET<br/>status='active',<br/>verification_token=NULL,<br/>verification_token_expires_at=NULL<br/>WHERE id = user.id
+
+    AS-->>Auth: { message: "Email verified" }
+    Auth-->>Web: 200 { message }
+    Web-->>Agent: Redirect to /login

@@ -1,0 +1,65 @@
+sequenceDiagram
+    autonumber
+
+    actor Agent as Buyer Agent
+    participant Web as Next.js Web<br/>(apps/web)
+    participant DC as DocumentExtractionController<br/>POST /document-extraction/extract-and-draft
+    participant DES as DocumentExtractionService
+    participant Claude as Claude API<br/>(claude-haiku-4-5-20251001)
+    participant AIS as AiInteractionsService
+    participant AcroSvc as AcroFormExtractorService
+    participant Comp as RpaComplianceValidator
+    participant Draft as TransactionDraftService
+    participant DB_AI as ai_interactions
+    participant DB_TX as real_estate_transactions
+    participant DB_C as contacts
+    participant DB_TP as transaction_parties
+    participant DB_TD as transaction_documents
+
+    Note over Agent,DB_TD: ══ Scenario 1 — First Upload (creates draft transaction) ══
+
+    Agent->>Web: Upload contract PDF(s)<br/>+ organizationId + accountId
+    Web->>DC: POST /api/v1/document-extraction/extract-and-draft<br/>multipart/form-data { files[], organizationId, createdByAccountId }
+
+    DC->>DES: extractFromPdfs(files)
+
+    DES->>Claude: messages.create()<br/>system: cached extraction prompt + schema<br/>user: PDF(s) as base64 documents
+    Note right of Claude: cache_control: ephemeral<br/>on system prompt block<br/>(5-min cache, ~10% cost on cache hit)
+    Claude-->>DES: ExtractionResult JSON
+
+    DES->>AIS: create({ feature:'contract_extraction',<br/>responseText: rawJson,<br/>metadata_json: { extraction: ExtractionResult },<br/>status:'success', promptTokens, completionTokens })
+    AIS->>DB_AI: INSERT ai_interactions<br/>response_text (raw JSON string, TEXT)<br/>metadata_json (ExtractionResult, JSONB)<br/>feature='contract_extraction'
+    DB_AI-->>AIS: AiInteractionEntity { id }
+    AIS-->>DES: interaction
+
+    DES-->>DC: { result: ExtractionResult, interaction }
+
+    DC->>AcroSvc: extract(files[0].buffer)
+    AcroSvc-->>DC: { hasAcroForm, fieldCount, fields… }
+
+    alt Digital PDF — AcroForm fields present
+        DC->>Comp: fromAcroForm(acroResult)
+        Note right of Comp: Deterministic rule engine<br/>no LLM involved
+        Comp-->>DC: ComplianceResult { sourceType:'acroform', rules, summary }
+    else Scanned / flattened PDF
+        DC->>Comp: fromLlmExtraction(extractionResult)
+        Comp-->>DC: ComplianceResult { sourceType:'llm_extraction', rules, summary }
+    end
+
+    DC->>Draft: createFromExtraction(extraction, interaction,<br/>compliance, organizationId, createdByAccountId)
+
+    Draft->>DB_TX: INSERT real_estate_transactions<br/>status='DRAFT', stage='INTAKE'<br/>property address, city, state, postalCode<br/>contractPrice, earnestMoneyAmount<br/>offerAcceptedAt, closeOfEscrowAt<br/>transactionNumber='TXN-YYYY-XXXXXX'
+    DB_TX-->>Draft: TransactionEntity { id }
+
+    loop For each party in extraction<br/>(buyers, sellers, buyerAgents,<br/>listingAgents, escrow, lenders, attorneys)
+        Draft->>DB_C: INSERT contacts<br/>contact_type, first_name, last_name,<br/>company_name, email, phone
+        DB_C-->>Draft: ContactEntity { id }
+        Draft->>DB_TP: INSERT transaction_parties<br/>transaction_id, contact_id, party_role,<br/>display_name, email, phone, is_primary=false
+    end
+
+    Draft->>DB_TD: INSERT transaction_documents<br/>transaction_id, document_type, title<br/>status='UPLOADED', version_no=1<br/>uploaded_by_account_id<br/>ai_interaction_id → ai_interactions.id<br/>metadata_json: { extraction, compliance,<br/>extractedAt, pdfSource, acroFieldCount,<br/>complianceStatus, confidenceOverall,<br/>extractionWarnings }
+    DB_TD-->>Draft: TransactionDocumentEntity
+
+    Draft-->>DC: { transaction, document, extractionResult, partiesCreated }
+    DC-->>Web: 201 DraftWithComplianceResult<br/>{ transaction, document, extractionResult,<br/>partiesCreated, compliance }
+    Web-->>Agent: Show review screen<br/>with extracted data + compliance report

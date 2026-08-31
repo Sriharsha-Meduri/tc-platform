@@ -1,0 +1,24 @@
+<h1>Audit Logs</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Action</th>
+      <th>Target</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each logs}}
+    <tr>
+      <td class="nowrap">{{this.createdAt}}</td>
+      <td><code>{{this.action}}</code></td>
+      <td>{{this.targetDisplayName}}</td>
+      <td>{{this.description}}</td>
+    </tr>
+    {{/each}}
+    {{#unless logs}}
+    <tr><td colspan="4" class="muted">No audit logs found.</td></tr>
+    {{/unless}}
+  </tbody>
+</table>

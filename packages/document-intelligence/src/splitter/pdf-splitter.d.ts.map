@@ -1,0 +1,1 @@
+{"version":3,"file":"pdf-splitter.d.ts","sourceRoot":"","sources":["pdf-splitter.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,WAAW;IAC1B,SAAS,EAAE,MAAM,CAAC;IAClB,WAAW,EAAE,MAAM,EAAE,CAAC;CACvB;AAED,qBAAa,WAAW;IAChB,KAAK,CAAC,SAAS,EAAE,MAAM,GAAG,OAAO,CAAC,WAAW,CAAC;CAerD"}

@@ -1,0 +1,122 @@
+<h1>Create Organization</h1>
+<form id="create-org-form" style="max-width:600px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:24px;">
+  <h3 style="margin-bottom:16px;font-size:16px;">Organization Details</h3>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Organization Name *</label>
+    <input name="name" required style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Type *</label>
+    <select name="type" required style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;">
+      <option value="brokerage">Brokerage</option>
+      <option value="team">Team</option>
+      <option value="transaction_coordination_co">Transaction Coordination Co</option>
+      <option value="title_company">Title Company</option>
+      <option value="escrow_company">Escrow Company</option>
+      <option value="lender">Lender</option>
+      <option value="law_firm">Law Firm</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">License Number</label>
+    <input name="licenseNumber" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;" />
+
+  <h3 style="margin-bottom:16px;font-size:16px;">Admin User Details</h3>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Admin Email *</label>
+    <input name="adminEmail" type="email" required style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div>
+      <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">First Name *</label>
+      <input name="adminFirstName" required style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+    </div>
+    <div>
+      <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Last Name *</label>
+      <input name="adminLastName" required style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Phone</label>
+    <input name="adminPhone" type="tel" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;" />
+
+  <h3 style="margin-bottom:16px;font-size:16px;">Address (Optional)</h3>
+
+  <div style="margin-bottom:14px;">
+    <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">Address Line 1</label>
+    <input name="addressLine1" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div>
+      <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">City</label>
+      <input name="city" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+    </div>
+    <div>
+      <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">State</label>
+      <input name="state" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+    </div>
+    <div>
+      <label style="display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;">ZIP Code</label>
+      <input name="zipCode" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;" />
+    </div>
+  </div>
+
+  <div style="margin-top:20px;display:flex;gap:8px;">
+    <button type="submit" class="btn btn-approve" style="padding:10px 20px;font-size:14px;">Create Organization</button>
+    <a href="/admin/organizations" class="btn" style="display:inline-block;padding:10px 20px;font-size:14px;background:#e2e8f0;color:#475569;text-decoration:none;border-radius:6px;">Cancel</a>
+  </div>
+</form>
+
+<div id="result" style="display:none;margin-top:16px;padding:16px;border-radius:8px;"></div>
+
+<script>
+document.getElementById('create-org-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = Object.fromEntries(new FormData(form));
+  const resultDiv = document.getElementById('result');
+
+  try {
+    const res = await fetch('/admin/api/organizations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+
+    if (res.ok) {
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'status-active';
+      resultDiv.innerHTML = `
+        <strong>Organization created!</strong><br/>
+        Org: ${json.organization.name} (${json.organization.id})<br/>
+        Admin: ${json.user.email}<br/>
+        Invite URL: <code style="word-break:break-all;">${json.inviteUrl}</code>
+      `;
+      form.reset();
+    } else {
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'status-inactive';
+      resultDiv.textContent = json.message || 'An error occurred';
+    }
+  } catch (err) {
+    resultDiv.style.display = 'block';
+    resultDiv.className = 'status-inactive';
+    resultDiv.textContent = 'Network error. Check the console for details.';
+    console.error(err);
+  }
+});
+</script>

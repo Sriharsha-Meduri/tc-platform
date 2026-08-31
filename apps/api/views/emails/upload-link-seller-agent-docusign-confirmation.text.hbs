@@ -1,0 +1,23 @@
+Hello {{recipientName}},
+
+All required documents for the transaction at {{propertyAddress}} have been uploaded and have passed validation. They're ready to be sent to the Buyer for signature.
+
+Before anything is sent, we need your confirmation. Once you confirm:
+  - These documents will be sent to the Buyer for electronic signature via DocuSign.
+  - The Buyer's Agent will be copied on the envelope with view-only access — they will not be asked to sign or initial anything.
+
+Please review these documents with your Buyer Agent before signing.
+
+Review and confirm here: {{uploadUrl}}
+
+This is the same secure link originally sent to you — no login is required. Nothing will be sent to the Buyer until you confirm on that page.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

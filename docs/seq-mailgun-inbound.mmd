@@ -1,0 +1,111 @@
+sequenceDiagram
+    autonumber
+
+    participant MG as Mailgun
+    participant WC as MailgunWebhookController<br/>POST /webhooks/email/inbound
+    participant WS as MailgunWebhookService
+    participant TXRepo as TransactionRepository
+    participant MsgSvc as TransactionMessagesService
+    participant JrnSvc as TransactionJournalsService
+    participant DocSvc as TransactionDocumentsService
+    participant S3 as S3StorageService<br/>(AWS S3)
+    participant ExtSvc as DocumentExtractionService
+    participant Claude as Claude API<br/>(claude-haiku-4-5-20251001)
+    participant AIS as AiInteractionsService
+    participant DB_TX as real_estate_transactions
+    participant DB_MSG as transaction_messages
+    participant DB_JRN as transaction_journals
+    participant DB_DOC as transaction_documents
+    participant DB_AI as ai_interactions
+
+    Note over MG,DB_AI: ══ Inbound Email with PDF Attachment ══
+
+    MG->>WC: POST /webhooks/email/inbound<br/>multipart/form-data<br/>{ sender, recipient: txn-{uuid}@txn.mytcapp.net,<br/>  subject, stripped-text, timestamp,<br/>  signature, token,<br/>  attachment-1: file.pdf, … }
+
+    Note right of WC: multer memoryStorage().any()<br/>parses multipart before guards
+
+    WC->>WC: Verify HMAC-SHA256 signature<br/>sign(timestamp + token, MAILGUN_WEBHOOK_SIGNING_KEY)
+    alt Signature invalid
+        WC-->>MG: 200 OK (always 200 to prevent Mailgun retry)
+        Note right of WC: Reject silently — never 4xx<br/>(Mailgun would retry on non-200)
+    end
+
+    WC->>WS: processInbound(payload, files[])
+
+    WS->>WS: extractTransactionId(recipient)<br/>parse "txn-{uuid}" from local part
+    alt Recipient does not match txn-{uuid}@... pattern
+        WS-->>WC: return (no-op)
+        WC-->>MG: 200 OK
+    end
+
+    WS->>TXRepo: findOne({ where: { id: transactionId } })
+    TXRepo->>DB_TX: SELECT * FROM real_estate_transactions<br/>WHERE id = transactionId
+    DB_TX-->>TXRepo: TransactionEntity { id, stage }
+    alt Transaction not found
+        WS-->>WC: return (no-op)
+        WC-->>MG: 200 OK
+    end
+
+    Note over WS,DB_MSG: ── Step 1: Persist the email message ──
+
+    WS->>MsgSvc: create({ transactionId, channel: EMAIL,<br/>direction: INBOUND, subject,<br/>bodyText: stripped-text,<br/>providerName: mailgun,<br/>providerMessageId: Message-Id,<br/>providerThreadId: In-Reply-To,<br/>threadKey, receivedAt, stage })
+    MsgSvc->>DB_MSG: INSERT transaction_messages
+    DB_MSG-->>MsgSvc: TransactionMessageEntity { id }
+    MsgSvc-->>WS: message
+
+    Note over WS,DB_JRN: ── Step 2: Journal — email received ──
+
+    WS->>JrnSvc: createEntry(transactionId,<br/>EMAIL_RECEIVED, EMAIL,<br/>"Email received from {sender}",<br/>bodyText, related: message.id,<br/>meta: { from, sender, recipient,<br/>messageId, attachmentCount })
+    JrnSvc->>DB_JRN: INSERT transaction_journals<br/>(append-only)
+    DB_JRN-->>JrnSvc: ok
+
+    alt No file attachments
+        WS-->>WC: return
+        WC-->>MG: 200 OK
+    end
+
+    Note over WS,DB_AI: ── Step 3: For each attachment ──
+
+    loop For each file attachment
+        WS->>WS: Check MIME type against allowlist<br/>(pdf, jpeg, png, tiff, doc, docx)
+        alt Unsupported MIME type
+            WS->>WS: log warn, skip file
+        end
+
+        WS->>DocSvc: uploadFile({ transactionId, stage,<br/>file, documentType: stageToDocumentType(stage),<br/>title: file.originalname })
+        DocSvc->>S3: upload(transactionId, stage,<br/>filename, buffer, mimetype)
+        Note right of S3: Path convention:<br/>transactions/{txnId}/{stage}/{uuid}-{filename}
+        S3-->>DocSvc: { storageKey }
+        DocSvc->>DB_DOC: INSERT transaction_documents<br/>{ transactionId, documentType, title,<br/>  fileName, mimeType, storageKey,<br/>  status: UPLOADED, workflowStepId: null }
+        DB_DOC-->>DocSvc: TransactionDocumentEntity { id }
+        DocSvc-->>WS: doc
+
+        alt MIME type is application/pdf
+            Note over WS,DB_AI: ── PDF-only: LLM extraction ──
+
+            WS->>ExtSvc: extractFromPdfs([file])
+            ExtSvc->>Claude: messages.create()<br/>system: cached extraction prompt + schema<br/>user: PDF as base64 document
+            Note right of Claude: cache_control: ephemeral<br/>on system prompt block<br/>(~10% cost on cache hit)
+            Claude-->>ExtSvc: ExtractionResult JSON
+
+            ExtSvc->>AIS: create({ feature:'contract_extraction',<br/>responseText: rawJson,<br/>metadataJson: { extraction },<br/>status:'success', tokenCounts })
+            AIS->>DB_AI: INSERT ai_interactions
+            DB_AI-->>AIS: AiInteractionEntity { id }
+            AIS-->>ExtSvc: interaction
+
+            ExtSvc-->>WS: { result: ExtractionResult, interaction }
+
+            WS->>DocSvc: patchMetadataJson(doc.id, {<br/>  extraction,<br/>  extractedAt,<br/>  pdfSource: 'inbound_email',<br/>  confidenceOverall,<br/>  extractionWarnings<br/>})
+            DocSvc->>DB_DOC: UPDATE transaction_documents<br/>SET metadata_json = metadata_json || patch<br/>WHERE id = doc.id
+
+            WS->>DocSvc: setAiInteractionId(doc.id, interaction.id)
+            DocSvc->>DB_DOC: UPDATE transaction_documents<br/>SET ai_interaction_id = interaction.id<br/>WHERE id = doc.id
+        end
+
+        WS->>JrnSvc: createEntry(transactionId,<br/>DOCUMENT_UPLOADED, EMAIL,<br/>"Attachment received via email: {filename}",<br/>related: doc.id,<br/>meta: { sender, fileName, mimeType,<br/>sizeBytes, documentType, stage, messageId })
+        JrnSvc->>DB_JRN: INSERT transaction_journals<br/>(append-only)
+        DB_JRN-->>JrnSvc: ok
+    end
+
+    WS-->>WC: void
+    WC-->>MG: 200 OK { received: true }

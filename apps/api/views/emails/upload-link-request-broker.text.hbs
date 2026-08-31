@@ -1,0 +1,17 @@
+Hello {{recipientName}},
+
+You've been added as the broker for the transaction at {{propertyAddress}}. Please use the secure link below to access your transaction page.
+
+{{uploadUrl}}
+
+No login is required. This secure link is unique to this transaction and intended only for you as the broker. Please do not forward it to unrelated parties.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

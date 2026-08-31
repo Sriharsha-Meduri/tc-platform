@@ -1,0 +1,206 @@
+{
+  "formCode": "RPA",
+  "formName": "Residential Purchase Agreement",
+  "data": {
+    "page_number": 1,
+    "section_1_offer": {
+      "date_prepared": "2026-01-27",
+      "A_offer_from": {
+        "buyer_names": ["Pam Vovos"],
+        "raw_text": "A. THIS IS AN OFFER FROM Pam Vovos (\"Buyer\")."
+      },
+      "B_property": {
+        "street_address": "4041 Bycroft",
+        "city": "Yorba Linda",
+        "county": "Orange",
+        "state": "California",
+        "zip_code": "92866",
+        "assessor_parcel_number": "33401120",
+        "raw_text": "B. THE PROPERTY to be acquired is 4041 Bycroft situated in Yorba Linda (City), Orange (County), California, 92866 (Zip Code), Assessor's Parcel No(s). 33401120 (\"Property\"). (Postal/Mailing address may be different from city jurisdiction. Buyer is advised to investigate.)"
+      },
+      "C_terms_specified_below": {
+        "acknowledged": true,
+        "raw_text": "C. THE TERMS OF THE PURCHASE ARE SPECIFIED BELOW AND ON THE FOLLOWING PAGES."
+      },
+      "D_parties": {
+        "buyer_and_seller_referred_to_as_parties": true,
+        "brokers_and_agents_not_parties": true,
+        "raw_text": "D. Buyer and Seller are referred to herein as the \"Parties.\" Brokers and Agents are not Parties to this Agreement."
+      }
+    },
+    "section_2_agency": {
+      "A_disclosure": {
+        "disclosure_acknowledged": true,
+        "raw_text": "A. DISCLOSURE: The Parties each acknowledge receipt of a \"Disclosure Regarding Real Estate Agency Relationship\" (C.A.R. Form AD) if represented by a real estate licensee. Buyer's Agent is not legally required to give to Seller's Agent the AD form Signed by Buyer. Seller's Agent is not legally obligated to give to Buyer's Agent the AD form Signed by Seller."
+      },
+      "B_confirmation": {
+        "seller_brokerage_firm": "Blue Lotus Realty",
+        "seller_brokerage_license_number": "02247722",
+        "seller_brokerage_represents_seller_checked": true,
+        "seller_brokerage_dual_agent_checked": false,
+        "seller_agent": "Ashok Patil",
+        "seller_agent_license_number": "02055556",
+        "seller_agent_represents_seller_checked": true,
+        "seller_agent_dual_agent_checked": false,
+        "buyer_brokerage_firm": "Keller Williams Coastal Properties",
+        "buyer_brokerage_license_number": "01443822",
+        "buyer_brokerage_represents_buyer_checked": true,
+        "buyer_brokerage_dual_agent_checked": false,
+        "buyer_agent": "Andrea Kaesbauer",
+        "buyer_agent_license_number": "01807749",
+        "buyer_agent_represents_buyer_checked": true,
+        "buyer_agent_dual_agent_checked": false,
+        "raw_text": "B. CONFIRMATION: The following agency relationships are hereby confirmed for this transaction.\nSeller's Brokerage Firm Blue Lotus Realty License Number 02247722\nIs the broker of (check one): ☒ the Seller; or ☐ both the Buyer and Seller (Dual Agent).\nSeller's Agent Ashok Patil License Number 02055556\nIs (check one): ☒ the Seller's Agent. (Salesperson or broker associate); or ☐ both the Buyer's and Seller's Agent (Dual Agent).\nBuyer's Brokerage Firm Keller Williams Coastal Properties License Number 01443822\nIs the broker of (check one): ☒ the Buyer; or ☐ both the Buyer and Seller (Dual Agent).\nBuyer's Agent Andrea Kaesbauer License Number 01807749\nIs (check one): ☒ the Buyer's Agent (Salesperson or broker associate); or ☐ both the Buyer's and Seller's Agent (Dual Agent).\nMore than one Brokerage represents ☐ Seller, ☐ Buyer. See, Additional Broker Acknowledgement (C.A.R. Form ABA)."
+      },
+      "C_more_than_one_brokerage": {
+        "checked": false,
+        "seller_checked": false,
+        "buyer_checked": false,
+        "raw_text": "More than one Brokerage represents Seller, Buyer. See, Additional Broker Acknowledgement (C.A.R. Form ABA)."
+      },
+      "D_potentially_competing_buyers_and_sellers": {
+        "possible_representation_checked": true,
+        "raw_text": "D. POTENTIALLY COMPETING BUYERS AND SELLERS: The Parties each acknowledge receipt of a ☑ \"Possible Representation of More than One Buyer or Seller - Disclosure and Consent\" (C.A.R. Form PRBS)."
+      }
+    },
+    "section_3_terms_and_allocation_of_costs_page_1": {
+      "A_purchase_price": {
+        "paragraph": "5, 5B (cash)",
+        "purchase_price": 1539900,
+        "all_cash_checked": true,
+        "raw_text": "A 5, 5B (cash) Purchase Price $ 1,539,900.00 X All Cash"
+      },
+      "B_close_of_escrow": {
+        "paragraph": null,
+        "days_after_acceptance": 21,
+        "on_date_checked": false,
+        "close_of_escrow_date": null,
+        "raw_text": "B Close Of Escrow (COE) ☑ 21 Days after Acceptance OR on (date)"
+      },
+      "C_expiration_of_offer": {
+        "paragraph": "32A",
+        "days_after_buyer_signatures": 3,
+        "expiration_date": null,
+        "expiration_time": "5PM",
+        "am_checked": false,
+        "pm_checked": false,
+        "raw_text": "C 32A Expiration of Offer 3 calendar days after all Buyer Signature(s) or (date), at 5PM or ☐ AM ☐ PM"
+      },
+      "D1_initial_deposit_amount": {
+        "paragraph": "5A(1)",
+        "deposit_amount": 46197,
+        "percentage_of_purchase_price": 3,
+        "business_days_after_acceptance": 3,
+        "wire_transfer_checked": true,
+        "other_delivery_method_checked": false,
+        "raw_text": "D(1) 5A(1) Initial Deposit Amount $ 46,197.00 (3.00 % of purchase price) within 3 (or ) business days after Acceptance by wire transfer OR ☐"
+      },
+      "D2_increased_deposit": {
+        "paragraph": "5A(2)",
+        "increased_deposit_checked": false,
+        "raw_text": "D(2) 5A(2) Increased Deposit See attached Increased Deposit Addendum (C.A.R. Form IDA)"
+      },
+      "E1_first_loan": {
+        "paragraph": "5C(1)",
+        "loan_amount": null,
+        "percentage_of_purchase_price": null,
+        "fixed_rate_checked": false,
+        "initial_adjustable_rate_checked": false,
+        "conventional_checked": false,
+        "fha_checked": false,
+        "va_checked": false,
+        "seller_financing_checked": false,
+        "other_checked": false,
+        "other_text": null,
+        "raw_text": "E(1) 5C(1) Loan Amount(s): First $ (% of purchase price) Interest Rate ☐ Fixed rate or ☐ Initial adjustable rate • not to exceed % Points • Buyer to pay up to points to obtain the rate above 17 (or ) Days after Acceptance If FHA or VA checked, Deliver list of lender required repairs Conventional or, if checked, ☐ FHA (Forms FVAC/HID attached) ☐ VA (Form FVAC attached) ☐ Seller Financing ☐ Other:"
+      },
+      "E2_additional_financed_amount": {
+        "paragraph": "5C(2)",
+        "loan_amount": null,
+        "percentage_of_purchase_price": null,
+        "conventional_checked": false,
+        "seller_financing_checked": false,
+        "other_checked": false,
+        "other_text": null,
+        "raw_text": "E(2) 5C(2) Additional Financed Amount $ (% of purchase price) Interest Rate ☐ Fixed rate or ☐ Initial adjustable rate • not to exceed % Points • Buyer to pay up to points to obtain rate above Conventional or, if checked, ☐ Seller Financing ☐ Other:"
+      },
+      "E3_occupancy_type": {
+        "paragraph": "7A",
+        "primary_checked": false,
+        "secondary_checked": false,
+        "investment_checked": false,
+        "raw_text": "E(3) 7A Occupancy Type ☐ Primary, or if checked, ☐ Secondary ☐ Investment"
+      },
+      "F_balance_of_down_payment": {
+        "paragraph": "5D",
+        "balance_of_down_payment": 1493703,
+        "raw_text": "F 5D Balance of Down Payment $ 1,493,703.00"
+      },
+      "purchase_price_total": {
+        "amount": 1539900,
+        "raw_text": "PURCHASE PRICE TOTAL $ 1,539,900.00"
+      }
+    },
+    "section_3_terms_and_allocation_of_costs_page_2": {
+      "L_contingencies": {
+        "L1_loan": {
+          "no_loan_contingency_checked": true,
+          "days_after_acceptance": 17
+        },
+        "L2_appraisal": {
+          "no_appraisal_contingency_checked": true,
+          "days_after_acceptance": 17
+        },
+        "L3_investigation_of_property": {
+          "investigation": {
+            "days_after_acceptance": 12
+          }
+        }
+      }
+    },
+    "section_3_terms_and_allocation_of_costs_page_3": {
+      "Q_allocation_of_costs": {
+        "Q7_escrow_fee": {
+          "paid_by": "Each",
+          "each_pay_own_fees_checked": true
+        },
+        "Q8_owners_title_insurance_policy": {
+          "paid_by": "Seller"
+        },
+        "Q18_home_warranty_plan": {
+          "paid_by": "Seller",
+          "seller_cost_not_to_exceed": 1200
+        }
+      }
+    },
+    "real_estate_brokers_section": {
+      "A_buyers_brokerage_firm": {
+        "firm_name": "Keller Williams Coastal Properties",
+        "dre_license": "01443822",
+        "agent_1": {
+          "name": "Andrea Kaesbauer",
+          "dre_license": "01807749",
+          "date": "1/27/2026"
+        }
+      },
+      "B_sellers_brokerage_firm": {
+        "firm_name": "Blue Lotus Realty",
+        "dre_license": "02247722",
+        "agent_1": {
+          "name": "Ashok Patil",
+          "dre_license": "02055556",
+          "date": "1/28/2026"
+        }
+      }
+    },
+    "seller_acceptance": {
+      "accepted_subject_to_counter_offer": false,
+      "seller_signature_date": "2026-01-28",
+      "buyer_signature_date": "2026-01-27"
+    },
+    "header": {
+      "form_code": "RPA",
+      "form_version": "Revised 12/25"
+    }
+  }
+}

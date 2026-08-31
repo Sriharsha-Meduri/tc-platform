@@ -1,0 +1,22 @@
+Hello {{recipientName}},
+
+One or more documents uploaded for the transaction at {{propertyAddress}} could not be saved because they did not pass validation. Please review the details below, correct the issue(s), and reupload using the same secure link.
+{{#each rejectedDocuments}}
+{{this.fileName}}
+{{#each this.reasons}}
+  - {{this}}
+{{/each}}
+{{/each}}
+Reupload here: {{uploadUrl}}
+
+This is the same secure link originally sent to you — no login is required, and any documents that already passed validation remain saved.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

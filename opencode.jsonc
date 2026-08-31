@@ -1,0 +1,34 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["AGENTS.md"],
+  "command": {
+    "seed": {
+      "template": "Run pnpm --filter @tc/api db:setup",
+      "description": "Run database migrations + seed"
+    },
+    "migrate": {
+      "template": "Run pnpm --filter @tc/api migration:run",
+      "description": "Run pending database migrations"
+    },
+    "docintel": {
+      "template": "Run pnpm --filter @tc/document-intelligence build",
+      "description": "Build document-intelligence package"
+    },
+    "test-api": {
+      "template": "Run pnpm --filter @tc/api test",
+      "description": "Run API test suite"
+    },
+    "typecheck": {
+      "template": "Run pnpm --filter @tc/api typecheck && pnpm --filter @tc/web typecheck",
+      "description": "Typecheck API and web packages"
+    },
+    "test-all": {
+      "template": "Run pnpm test",
+      "description": "Run all tests across all packages"
+    },
+    "verify": {
+      "template": "Run pnpm --filter @tc/api typecheck && pnpm --filter @tc/document-intelligence typecheck && pnpm lint && pnpm test",
+      "description": "Full pre-commit verification: typecheck + lint + test"
+    }
+  }
+}

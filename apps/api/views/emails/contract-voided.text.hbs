@@ -1,0 +1,34 @@
+Dear Agent,
+
+We are unable to proceed with the transaction for the property at:
+  {{address}}{{#if txNumber}} (Transaction #{{txNumber}}){{/if}}
+
+The contract submission has been voided. Please review the issues listed below and resubmit a corrected contract.
+
+{{#if missingFields}}
+MISSING REQUIRED INFORMATION
+────────────────────────────────────────
+{{#each missingFields}}  • {{this}}
+{{/each}}
+{{/if}}
+{{#if complianceFailures}}
+COMPLIANCE ISSUES
+────────────────────────────────────────
+{{#each complianceFailures}}  • [{{formCode}}] {{label}}{{#if detail}}
+    {{detail}}{{/if}}
+{{/each}}
+{{/if}}
+{{#if missingForms}}
+MISSING FORMS & DISCLOSURES
+────────────────────────────────────────
+{{#each missingForms}}  • {{title}}{{#if formCode}} ({{formCode}}){{/if}}
+{{/each}}
+{{/if}}
+{{#unless hasIssues}}
+No specific issues were automatically detected. Please review the contract and resubmit.
+
+{{/unless}}
+Please correct the above issues and resubmit the contract at your earliest convenience.
+
+Thank you,
+TC Platform

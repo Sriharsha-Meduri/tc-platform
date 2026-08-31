@@ -1,0 +1,33 @@
+{
+  "formCode": "BIA",
+  "formName": "Buyer's Investigation Advisory",
+  "data": {
+    "property_address": null,
+    "date": "2026-02-26",
+    "buyer_names": ["Varun Srivastava"],
+    "agent_name": null,
+    "brokerage_name": null,
+    "advisory_sections_present": {
+      "professional_inspections": true,
+      "investigations_and_reports": true,
+      "insurance": true,
+      "title": false,
+      "financing": false,
+      "environmental_hazards": true,
+      "earthquake": true,
+      "flood": true,
+      "fire": true,
+      "mello_roos": false,
+      "hoa_documents": false
+    },
+    "buyer_acknowledgement": {
+      "buyer_1_signed": true,
+      "buyer_1_signature_date": "2026-02-26",
+      "buyer_2_signed": false,
+      "buyer_2_signature_date": null,
+      "agent_signed": false,
+      "agent_signature_date": null
+    },
+    "extractionWarnings": []
+  }
+}

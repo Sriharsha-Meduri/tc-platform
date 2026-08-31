@@ -1,0 +1,32 @@
+{
+  "extends": "@tc/config/tsconfig-next",
+  "compilerOptions": {
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@tc/shared": [
+        "../../packages/shared/src/index.ts"
+      ],
+      "@tc/api-client": [
+        "../../packages/api-client/src/index.ts"
+      ]
+    },
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "e2e",
+    "jest.config.ts",
+    "jest.setup.ts"
+  ]
+}

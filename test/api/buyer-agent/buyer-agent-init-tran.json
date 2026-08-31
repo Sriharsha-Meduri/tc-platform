@@ -1,0 +1,98 @@
+{
+  "transaction": {
+    "type": "purchase",
+    "side": "buyer",
+    "property": {
+      "addressLine1": "1234 Sunset Blvd",
+      "city": "Los Angeles",
+      "state": "CA",
+      "postalCode": "90028",
+      "county": "Los Angeles",
+      "contractPrice": 850000,
+      "earnestMoney": 17000
+    }
+  },
+  "contract": {
+    "acceptanceDate": "2026-05-01",
+    "closingDate": "2026-07-15",
+    "disclosuresDueDays": 7,
+    "inspectionContingencyDays": 17,
+    "appraisalContingencyDays": 21,
+    "loanContingencyDays": 21
+  },
+  "parties": [
+    {
+      "role": "buyer",
+      "displayName": "Michael Chen",
+      "email": "michael.chen@test.com",
+      "phone": "310-555-0011"
+    },
+    {
+      "role": "seller",
+      "displayName": "Patricia Webb",
+      "email": "patricia.webb@test.com",
+      "phone": "310-555-0022"
+    },
+    {
+      "role": "buyer_agent",
+      "displayName": "David Agent",
+      "email": "bhanu.vasireddy@gmail.com",
+      "phone": "310-555-0202"
+    },
+    {
+      "role": "seller_agent",
+      "displayName": "Carol Agent",
+      "email": "sepra@yahoo.com",
+      "phone": "310-555-0101"
+    },
+    {
+      "role": "buyer_transaction_coordinator",
+      "displayName": "Alice TC",
+      "email": "bvasireddy@proton.me",
+      "phone": "310-555-0301"
+    },
+    {
+      "role": "loan_officer",
+      "displayName": "James Rivera",
+      "email": "j.rivera@westernbank1.com",
+      "phone": "213-555-0401"
+    },
+    {
+      "role": "escrow_officer",
+      "displayName": "Sandra Kim",
+      "email": "s.kim@sunsetescrow1.com",
+      "phone": "818-555-0501"
+    },
+    {
+      "role": "title_officer",
+      "displayName": "Robert Patel",
+      "email": "r.patel@caltitle1.com",
+      "phone": "818-555-0502"
+    },
+    {
+      "role": "inspector",
+      "displayName": "Tom Briggs",
+      "email": "tom@briggsinspections1.com",
+      "phone": "626-555-0601"
+    },
+    {
+      "role": "appraiser",
+      "displayName": "Lisa Monroe",
+      "email": "lisa@laappraisals1.com",
+      "phone": "626-555-0701"
+    }
+  ],
+  "forms": [
+    "RPA",
+    "TDS",
+    "SPQ",
+    "NHD",
+    "AD",
+    "AVID",
+    "BIA",
+    "SBSA",
+    "GLVAR",
+    "CR-B",
+    "PEAD"
+  ]
+}

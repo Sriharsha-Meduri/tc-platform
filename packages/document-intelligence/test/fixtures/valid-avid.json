@@ -1,0 +1,11 @@
+{
+  "header": {
+    "property_address": "123 Main St"
+  },
+  "signatures": {
+    "agent_signed": true,
+    "agent_signature_date": "2026-04-15",
+    "buyer_signed": true,
+    "buyer_signature_date": "2026-04-15"
+  }
+}

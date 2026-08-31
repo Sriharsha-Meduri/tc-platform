@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Turbo
+.turbo/
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Auto-generated files — never edit manually
+apps/api/src/schema.gql
+
+# Environment — never commit secrets
+# All .env.* files are ignored EXCEPT .env.example (safe template, no real secrets)
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code project tooling
+.claude/
+
+# Testing
+coverage/
+
+# React Native / Expo
+apps/mobile/ios/build/
+apps/mobile/android/build/
+apps/mobile/android/.gradle/
+apps/mobile/*.jks
+apps/mobile/*.keystore
+apps/mobile/.expo/
+.vercel
+
+# Browser capture files
+*.har
+.env*

@@ -1,0 +1,19 @@
+Hello {{recipientName}},
+
+The Verification of Property (VP) for the transaction at {{propertyAddress}} has passed validation and has been sent to you through DocuSign for signature.
+
+Look out for a separate email from DocuSign with your signing link. You can also review the transaction using your existing secure upload link — the same link you already have.
+
+View your upload page here: {{uploadUrl}}
+
+This is the same secure link originally sent to you — no login is required.
+
+Thank you,
+{{#if tcName}}{{tcName}}
+Transaction Coordinator
+{{/if}}{{#if transactionEmail}}{{transactionEmail}}
+{{/if}}{{#if tcPhone}}{{tcPhone}}
+{{/if}}
+{{#if transactionId}}Transaction ID: {{transactionId}}
+{{/if}}{{#if tcName}}Transaction Coordinator: {{tcName}}
+{{/if}}{{#if transactionEmail}}Transaction Email: {{transactionEmail}}{{/if}}

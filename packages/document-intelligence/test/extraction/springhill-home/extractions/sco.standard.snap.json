@@ -1,0 +1,94 @@
+{
+  "formCode": "SCO",
+  "formName": "Seller Counter Offer",
+  "data": {
+    "header": {
+      "form_code": "SCO",
+      "form_version": "Revised 12/25",
+      "form_name": "SELLER COUNTER OFFER",
+      "property_address": "7746 Spring Hill Street, Chino, CA 91708",
+      "date": "2026-06-13",
+      "counter_offer_number": "2"
+    },
+    "parties": {
+      "buyer_names": [
+        "Nick buyer",
+        "Cathy buyer"
+      ],
+      "seller_names": [
+        "Raju seller",
+        "Ruchi seller"
+      ]
+    },
+    "offer_reference": {
+      "referenced_form_code": "BCO",
+      "referenced_offer_date": "2026-06-13",
+      "referenced_counter_offer_number": "1",
+      "counter_number": 2
+    },
+    "counter_offer_terms": {
+      "purchase_price": 1010000,
+      "other_terms_text": "1-Purchase price to be $1010,000",
+      "other_terms_modifications": {
+        "purchase_price": 1010000,
+        "close_of_escrow_date": null,
+        "possession_date": null,
+        "initial_deposit_amount": null,
+        "increased_deposit_amount": null,
+        "seller_credit_amount": null,
+        "loan_contingency_waived": false,
+        "loan_contingency_days": null,
+        "appraisal_contingency_waived": false,
+        "appraisal_contingency_days": null,
+        "inspection_contingency_days": null,
+        "seller_document_review_days": null,
+        "title_review_days": null,
+        "insurance_contingency_days": null,
+        "hoa_review_days": null,
+        "leased_liened_review_days": null,
+        "sale_of_buyers_property": false,
+        "buyer_broker_compensation": null,
+        "repairs_or_credits": null,
+        "occupancy_or_rent_back": null,
+        "home_warranty": null,
+        "items_included_or_excluded": null,
+        "hoa_terms": null,
+        "solar_or_leased_items": null,
+        "other_deadlines_or_obligations": null
+      },
+      "attached_addenda": []
+    },
+    "expiration": {
+      "expiration_date": null,
+      "expiration_time": "05:00",
+      "expiration_time_period": "PM",
+      "alternative_expiration_specified": false
+    },
+    "section_4_offer": {
+      "offeror_1_signature_present": true,
+      "offeror_1_signature_date": "2026-06-13",
+      "offeror_2_signature_present": true,
+      "offeror_2_signature_date": "2026-06-13",
+      "offeror_1_typed_name": "Raju seller",
+      "offeror_2_typed_name": "Ruchi seller"
+    },
+    "section_5_acceptance": {
+      "subject_to_attached_counter_offer": false,
+      "acceptor_1_signature_present": true,
+      "acceptor_1_signature_date": "2026-06-13",
+      "acceptor_1_signature_time": null,
+      "acceptor_1_signature_time_period": null,
+      "acceptor_2_signature_present": true,
+      "acceptor_2_signature_date": "2026-06-13",
+      "acceptor_2_signature_time": null,
+      "acceptor_2_signature_time_period": null
+    },
+    "confirmation_of_acceptance": {
+      "confirmation_initials": null,
+      "confirmation_date": null,
+      "confirmation_time": null,
+      "confirmation_time_period": null
+    },
+    "extractionWarnings": []
+  }
+}

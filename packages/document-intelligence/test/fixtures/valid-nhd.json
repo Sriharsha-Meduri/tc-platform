@@ -1,0 +1,8 @@
+{
+  "property_address": "123 Main St",
+  "city": "Los Angeles",
+  "signatures": {
+    "seller_signature": true,
+    "seller_signature_date": "2026-04-15"
+  }
+}

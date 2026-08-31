@@ -1,0 +1,15 @@
+{
+  "header": {
+    "property_address": "123 Main St",
+    "city": "Los Angeles",
+    "county": "Los Angeles"
+  },
+  "signatures": {
+    "seller_signature_1": true,
+    "seller_signature_2": true,
+    "seller_date_1": "2026-04-15",
+    "buyer_signature_1": true,
+    "buyer_signature_2": false,
+    "buyer_date_1": "2026-04-15"
+  }
+}

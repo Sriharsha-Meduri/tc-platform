@@ -1,0 +1,41 @@
+{
+  "name": "@tc/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "expo": "~52.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.0",
+    "@react-navigation/native": "^6.0.0",
+    "@react-navigation/native-stack": "^6.0.0",
+    "react-native-safe-area-context": "^4.0.0",
+    "react-native-screens": "^3.0.0",
+    "@tc/shared": "workspace:*",
+    "@tc/api-client": "workspace:*"
+  },
+  "devDependencies": {
+    "@tc/config": "workspace:*",
+    "@testing-library/jest-native": "^5.0.0",
+    "@testing-library/react-native": "^12.0.0",
+    "@types/react": "~18.3.0",
+    "@types/react-native": "^0.73.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react-native": "^4.0.0",
+    "jest": "^29.0.0",
+    "jest-expo": "~52.0.0",
+    "typescript": "^5.0.0"
+  }
+}

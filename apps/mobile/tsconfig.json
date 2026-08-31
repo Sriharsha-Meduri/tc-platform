@@ -1,0 +1,11 @@
+{
+  "extends": "@tc/config/tsconfig-react-native",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tc/shared": ["../../packages/shared/src/index.ts"],
+      "@tc/api-client": ["../../packages/api-client/src/index.ts"]
+    }
+  },
+  "include": ["src", "App.tsx"]
+}
