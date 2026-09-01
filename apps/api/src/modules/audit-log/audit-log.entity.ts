@@ -96,6 +96,10 @@ export enum AuditAction {
   ESCROW_OPENING_EMAIL_SENT = 'escrow_opening_email_sent',
   /** A Notice to Perform (NTP) prompt was sent to the Listing TC after a contingency deadline passed without removal. */
   NOTICE_TO_PERFORM_REMINDER_SENT = 'notice_to_perform_reminder_sent',
+  /** The Listing TC marked the seller disclosure packet reviewed for completeness. */
+  DISCLOSURE_PACKET_REVIEWED = 'disclosure_packet_reviewed',
+  /** The reviewed seller disclosure packet was forwarded to the Buyer TC and Buyer Agent. */
+  DISCLOSURES_FORWARDED_TO_BUYER = 'disclosures_forwarded_to_buyer',
 }
 
 export const USER_CATEGORY_ACTIONS = [
@@ -165,6 +169,8 @@ export const TRANSACTION_CATEGORY_ACTIONS = [
   AuditAction.ESCROW_REJECTION_EMAIL_SENT,
   AuditAction.ESCROW_OPENING_EMAIL_SENT,
   AuditAction.NOTICE_TO_PERFORM_REMINDER_SENT,
+  AuditAction.DISCLOSURE_PACKET_REVIEWED,
+  AuditAction.DISCLOSURES_FORWARDED_TO_BUYER,
 ];
 registerEnumType(AuditAction, { name: 'AuditAction' });
 
