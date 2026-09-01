@@ -4,6 +4,7 @@ import {
   TransactionType,
   TransactionSide,
   TransactionStatus,
+  CoordinatorSide,
 } from '../entities/transaction.entity';
 
 @InputType()
@@ -17,6 +18,11 @@ export class UpdateTransactionInput {
   @IsOptional()
   @IsEnum(TransactionSide)
   side?: TransactionSide;
+
+  @Field(() => CoordinatorSide, { nullable: true })
+  @IsOptional()
+  @IsEnum(CoordinatorSide)
+  transactionSide?: CoordinatorSide;
 
   @Field(() => TransactionStatus, { nullable: true })
   @IsOptional()

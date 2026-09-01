@@ -574,7 +574,15 @@ describe('DocumentExtractionController — mockExtractions', () => {
     });
 
     it('rejects transactionSide=SELLER while the Seller Side feature flag is locked', async () => {
-      const { controller, mocks } = createController();
+      let LockedController!: typeof DocumentExtractionController;
+      jest.isolateModules(() => {
+        jest.doMock('@tc/shared', () => ({
+          ...jest.requireActual('@tc/shared'),
+          TRANSACTION_FEATURES: { buyerSideEnabled: true, sellerSideEnabled: false },
+        }));
+        LockedController = require('./document-extraction.controller').DocumentExtractionController;
+      });
+      const { controller, mocks } = createController(undefined, LockedController);
 
       mocks.acroFormExtractorService.extract.mockResolvedValue(scanResult(false, 0));
       mocks.transactionDraftService.findDuplicateByAddressAndOrg.mockResolvedValue(null);
@@ -621,7 +629,16 @@ describe('DocumentExtractionController — mockExtractions', () => {
 
   describe('normalizeTransactionSide — Seller Side feature flag (TRANSACTION_FEATURES)', () => {
     it('rejects an explicit SELLER request while sellerSideEnabled is false', () => {
-      const { controller } = createController();
+      let FreshController!: typeof DocumentExtractionController;
+      jest.isolateModules(() => {
+        jest.doMock('@tc/shared', () => ({
+          ...jest.requireActual('@tc/shared'),
+          TRANSACTION_FEATURES: { buyerSideEnabled: true, sellerSideEnabled: false },
+        }));
+        FreshController = require('./document-extraction.controller').DocumentExtractionController;
+      });
+
+      const { controller } = createController(undefined, FreshController);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(() => (controller as any).normalizeTransactionSide('SELLER')).toThrow(
         'Seller Side Transaction is not yet available.',
@@ -834,7 +851,15 @@ describe('DocumentExtractionController — extractAndDraftRouted completion-emai
   });
 
   it('rejects an explicit SELLER request synchronously — never creates a job or starts the async pipeline', async () => {
-    const { controller, mocks } = createController();
+    let LockedController!: typeof DocumentExtractionController;
+    jest.isolateModules(() => {
+      jest.doMock('@tc/shared', () => ({
+        ...jest.requireActual('@tc/shared'),
+        TRANSACTION_FEATURES: { buyerSideEnabled: true, sellerSideEnabled: false },
+      }));
+      LockedController = require('./document-extraction.controller').DocumentExtractionController;
+    });
+    const { controller, mocks } = createController(undefined, LockedController);
     const runSpy = jest.fn();
     (controller as any).runExtractAndDraftRouted = runSpy;
 
