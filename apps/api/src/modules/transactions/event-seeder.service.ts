@@ -8,6 +8,7 @@ import { ContingencyRemovalReminderSchedulerService, ContingencyEventCandidate }
 import { ContingencyType } from '../reminders/entities/contingency-removal-reminder.entity';
 import { VerificationOfPropertyReminderSchedulerService } from '../reminders/verification-of-property-reminder-scheduler.service';
 import { SellerSideDocumentReminderSchedulerService } from '../reminders/seller-side-document-reminder-scheduler.service';
+import { NoticeToPerformReminderSchedulerService } from '../reminders/notice-to-perform-reminder-scheduler.service';
 import { findContractFamilyDocuments } from './contract-terms-merge.util';
 import { FinalTermsService } from './final-terms.service';
 import type { FinalTermKey } from '@tc/document-intelligence';
@@ -32,6 +33,7 @@ export class EventSeederService {
     private readonly contingencyReminderScheduler: ContingencyRemovalReminderSchedulerService,
     private readonly vpReminderScheduler: VerificationOfPropertyReminderSchedulerService,
     private readonly sellerSideReminderScheduler: SellerSideDocumentReminderSchedulerService,
+    private readonly ntpReminderScheduler: NoticeToPerformReminderSchedulerService,
     private readonly finalTermsService: FinalTermsService,
   ) {}
 
@@ -183,6 +185,12 @@ export class EventSeederService {
     // above — re-evaluates every required Seller Agent form code against the
     // current Seller Disclosures Due event every time this method runs.
     await this.sellerSideReminderScheduler.scheduleOrReschedule(transactionId, finalEventByType.get(EventType.DISCLOSURES_DUE) ?? null);
+
+    // ── Notice to Perform prompts (Listing TC) ────────────────────────────────
+    // Seller-side only — the scheduler itself no-ops for buyer-side/legacy
+    // transactions. Reuses the same contingency candidates as the contingency
+    // reminder above; the NTP fires NTP-days AFTER each unremoved deadline.
+    await this.ntpReminderScheduler.scheduleOrReschedule(transactionId, contingencyCandidates);
 
     return saved;
   }

@@ -130,9 +130,36 @@ export interface SellerSideDocumentReminderJobData {
   transactionStage: string;
 }
 
+/**
+ * The seller-side Notice to Perform (NTP) prompt, fired N days AFTER a
+ * contingency deadline passes without the contingency being removed. Unlike the
+ * contingency-removal reminder (which nudges the Buyer Agent before the
+ * deadline), this prompts the Listing TC directly to consider issuing an NTP.
+ * Sent to the TC's own email — no upload link involved.
+ */
+export interface NoticeToPerformReminderJobData {
+  reminderType: 'notice_to_perform';
+  transactionId: string;
+  transactionNumber: string;
+  propertyAddress: string;
+  transactionEventId: string;
+  contingencyType: ContingencyType;
+  /** Human-readable label, e.g. "Inspection Contingency". */
+  contingencyLabel: string;
+  /** ISO date string of the contingency deadline the NTP window is measured from. */
+  deadline: string;
+  /** How many days after the deadline this prompt fires. */
+  ntpDays: number;
+  recipientEmail: string;
+  recipientName: string;
+  fromAddress: string;
+  transactionStage: string;
+}
+
 export type DeadlineReminderJobData =
   | OffsetReminderJobData
   | CustomReminderJobData
   | ContingencyRemovalReminderJobData
   | VerificationOfPropertyReminderJobData
-  | SellerSideDocumentReminderJobData;
+  | SellerSideDocumentReminderJobData
+  | NoticeToPerformReminderJobData;

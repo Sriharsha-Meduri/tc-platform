@@ -34,6 +34,7 @@ function buildService(deps: {
   const contingencyReminderScheduler = { scheduleOrReschedule: jest.fn().mockResolvedValue(undefined) };
   const vpReminderScheduler = { scheduleOrReschedule: jest.fn().mockResolvedValue(undefined) };
   const sellerSideReminderScheduler = { scheduleOrReschedule: jest.fn().mockResolvedValue(undefined) };
+  const ntpReminderScheduler = { scheduleOrReschedule: jest.fn().mockResolvedValue(undefined) };
   // Real FinalTermsService, backed by the same mocked documentsRepo — so the
   // seeder's deadlines are genuinely produced by the resolver, the same way
   // production wires it, rather than a second independently-faked source.
@@ -46,10 +47,11 @@ function buildService(deps: {
     contingencyReminderScheduler as never,
     vpReminderScheduler as never,
     sellerSideReminderScheduler as never,
+    ntpReminderScheduler as never,
     finalTermsService,
   );
 
-  return { service, documentsRepo, eventsRepo, reminderScheduler, contingencyReminderScheduler, vpReminderScheduler, sellerSideReminderScheduler, finalTermsService };
+  return { service, documentsRepo, eventsRepo, reminderScheduler, contingencyReminderScheduler, vpReminderScheduler, sellerSideReminderScheduler, ntpReminderScheduler, finalTermsService };
 }
 
 describe('EventSeederService', () => {
