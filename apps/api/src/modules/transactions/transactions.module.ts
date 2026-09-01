@@ -11,6 +11,7 @@ import { ContractSubmissionService } from './contract-submission.service';
 import { EventSeederService } from './event-seeder.service';
 import { FinalTermsService } from './final-terms.service';
 import { TransactionWelcomeEmailService } from './transaction-welcome-email.service';
+import { EscrowOpeningEmailService } from './escrow-opening-email.service';
 import { VoidNotifyService } from './void-notify.service';
 import { ContactEntity } from '../contacts/entities/contact.entity';
 import { TransactionPartyEntity } from '../transaction-parties/entities/transaction-party.entity';
@@ -62,7 +63,7 @@ import { OrganizationMembershipEntity } from '../organizations/entities/organiza
     CdaGenerationModule,
   ],
   controllers: [TransactionsController],
-  providers: [TransactionsResolver, TransactionsService, TransactionStageInstancesService, TransactionDraftService, ContractSubmissionService, EventSeederService, TransactionWelcomeEmailService, VoidNotifyService, FinalTermsService],
-  exports: [TransactionsService, TransactionStageInstancesService, TransactionDraftService, ContractSubmissionService, EventSeederService, TransactionWelcomeEmailService, VoidNotifyService, FinalTermsService],
+  providers: [TransactionsResolver, TransactionsService, TransactionStageInstancesService, TransactionDraftService, ContractSubmissionService, EventSeederService, TransactionWelcomeEmailService, EscrowOpeningEmailService, VoidNotifyService, FinalTermsService],
+  exports: [TransactionsService, TransactionStageInstancesService, TransactionDraftService, ContractSubmissionService, EventSeederService, TransactionWelcomeEmailService, EscrowOpeningEmailService, VoidNotifyService, FinalTermsService],
 })
 export class TransactionsModule {}

@@ -5,12 +5,14 @@ import { EscrowInformationEntity } from './entities/escrow-information.entity';
 import { HoaInformationEntity } from './entities/hoa-information.entity';
 import { BuyerBrokerCommissionEntity } from './entities/buyer-broker-commission.entity';
 import { BuyerSideInformationEntity } from './entities/buyer-side-information.entity';
+import { SellerSideInformationEntity } from './entities/seller-side-information.entity';
 import { BrokerInformationEntity } from './entities/broker-information.entity';
 import { LenderInformationService } from './lender-information.service';
 import { EscrowInformationService } from './escrow-information.service';
 import { HoaInformationService } from './hoa-information.service';
 import { BrokerCommissionService } from './broker-commission.service';
 import { BuyerSideInformationService } from './buyer-side-information.service';
+import { SellerSideInformationService } from './seller-side-information.service';
 import { BrokerInformationService } from './broker-information.service';
 import { ExternalTransactionInformationService } from './external-transaction-information.service';
 import { TransactionDocumentsModule } from '../transaction-documents/transaction-documents.module';
@@ -28,7 +30,7 @@ import { TransactionFormTemplatesModule } from '../transaction-form-templates/tr
  */
 @Module({
   imports: [
-    TypeOrmModule.forFeature([LenderInformationEntity, EscrowInformationEntity, HoaInformationEntity, BuyerBrokerCommissionEntity, BuyerSideInformationEntity, BrokerInformationEntity]),
+    TypeOrmModule.forFeature([LenderInformationEntity, EscrowInformationEntity, HoaInformationEntity, BuyerBrokerCommissionEntity, BuyerSideInformationEntity, SellerSideInformationEntity, BrokerInformationEntity]),
     TransactionDocumentsModule,
     AuditLogModule,
     TransactionFormTemplatesModule,
@@ -39,9 +41,10 @@ import { TransactionFormTemplatesModule } from '../transaction-form-templates/tr
     HoaInformationService,
     BrokerCommissionService,
     BuyerSideInformationService,
+    SellerSideInformationService,
     BrokerInformationService,
     ExternalTransactionInformationService,
   ],
-  exports: [ExternalTransactionInformationService, EscrowInformationService, LenderInformationService, HoaInformationService, BrokerCommissionService, BuyerSideInformationService, BrokerInformationService],
+  exports: [ExternalTransactionInformationService, EscrowInformationService, LenderInformationService, HoaInformationService, BrokerCommissionService, BuyerSideInformationService, SellerSideInformationService, BrokerInformationService],
 })
 export class TransactionContactInformationModule {}
