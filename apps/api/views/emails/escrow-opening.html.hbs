@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, Helvetica, sans-serif; color:#1b2431;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8; padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:10px; overflow:hidden; border:1px solid #e2e5ea;">
+          <tr>
+            <td style="background-color:#294a7a; padding:24px 32px;">
+              <div style="color:#ffffff; font-size:20px; font-weight:bold;">Opening Escrow</div>
+              <div style="color:#c9d6ea; font-size:14px; margin-top:4px;">{{propertyAddress}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px 32px;">
+              <p style="margin:0 0 16px; font-size:15px; line-height:1.6;">Hello {{escrowContactName}},</p>
+              <p style="margin:0 0 20px; font-size:15px; line-height:1.6;">
+                We have an executed contract on <strong>{{propertyAddress}}</strong> and would like to open escrow.
+                The transaction details are below. Please confirm receipt and let us know the escrow number once the file is opened.
+              </p>
+
+              <h3 style="margin:24px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color:#5a6473;">Escrow &amp; Title</h3>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px; line-height:1.6;">
+                <tr><td style="padding:4px 0; color:#5a6473; width:45%;">Preferred escrow company</td><td style="padding:4px 0;">{{preferredEscrowCompany}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Preferred title company</td><td style="padding:4px 0;">{{titleCompany}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Title contact</td><td style="padding:4px 0;">{{titleContactName}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Title contact email</td><td style="padding:4px 0;">{{titleContactEmail}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Title contact phone</td><td style="padding:4px 0;">{{titleContactPhone}}</td></tr>
+              </table>
+
+              <h3 style="margin:24px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color:#5a6473;">Agents &amp; Commissions</h3>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px; line-height:1.6;">
+                <tr><td style="padding:4px 0; color:#5a6473; width:45%;">Buyer agent</td><td style="padding:4px 0;">{{buyerAgentName}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Buyer agent email</td><td style="padding:4px 0;">{{buyerAgentEmail}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Buyer agent brokerage</td><td style="padding:4px 0;">{{buyerAgentBrokerage}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Buyer agent commission</td><td style="padding:4px 0;">{{buyerAgentCommission}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Seller agent</td><td style="padding:4px 0;">{{sellerAgentName}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Seller agent email</td><td style="padding:4px 0;">{{sellerAgentEmail}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Seller agent commission</td><td style="padding:4px 0;">{{sellerAgentCommission}}</td></tr>
+              </table>
+
+              <h3 style="margin:24px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color:#5a6473;">Home Warranty &amp; Disclosures</h3>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px; line-height:1.6;">
+                <tr><td style="padding:4px 0; color:#5a6473; width:45%;">Home warranty company</td><td style="padding:4px 0;">{{homeWarrantyCompany}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">Seller paying for home warranty</td><td style="padding:4px 0;">{{sellerPaysHomeWarranty}}</td></tr>
+                <tr><td style="padding:4px 0; color:#5a6473;">NHD company</td><td style="padding:4px 0;">{{nhdCompany}}</td></tr>
+              </table>
+
+              <p style="margin:24px 0 0; font-size:14px; line-height:1.6; color:#5a6473;">
+                Transaction reference: {{txNumber}}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#f4f6f8; padding:20px 32px; border-top:1px solid #e2e5ea;">
+              <p style="margin:0; font-size:13px; line-height:1.6; color:#5a6473;">
+                {{tcName}}<br>
+                {{tcPhone}}<br>
+                {{transactionEmail}}
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

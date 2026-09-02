@@ -14,7 +14,9 @@ import { InitWorkflowService } from '../transaction-workflow-steps/init-workflow
 import { InitWorkflowDto } from '../transaction-workflow-steps/dto/init-workflow.dto';
 import { ContractSubmissionService, SubmitContractDto } from './contract-submission.service';
 import { EventSeederService } from './event-seeder.service';
+import { EscrowOpeningEmailService } from './escrow-opening-email.service';
 import { VoidNotifyService, VoidNotifyDto } from './void-notify.service';
+import { SellerSideInformationService, SellerSideInformationInput } from '../transaction-contact-information/seller-side-information.service';
 import { TransactionClockService, SetClockDto } from '../transaction-clock/transaction-clock.service';
 import { ReminderSchedulerService } from '../reminders/reminder-scheduler.service';
 import { DEFAULT_BUYER_SIDE_REMINDER_LEAD_DAYS } from '../reminders/verification-of-property-reminder-scheduler.service';
@@ -33,6 +35,8 @@ export class TransactionsController {
     private readonly initWorkflowService: InitWorkflowService,
     private readonly contractSubmissionService: ContractSubmissionService,
     private readonly eventSeederService: EventSeederService,
+    private readonly escrowOpeningEmailService: EscrowOpeningEmailService,
+    private readonly sellerSideInformationService: SellerSideInformationService,
     private readonly voidNotifyService: VoidNotifyService,
     private readonly transactionClockService: TransactionClockService,
     private readonly reminderSchedulerService: ReminderSchedulerService,
@@ -389,6 +393,44 @@ export class TransactionsController {
     const tx = await this.transactionsService.findOne(id);
     if (!tx) throw new NotFoundException('Transaction not found');
     return { sellerSideReminderLeadDays: tx.sellerSideReminderLeadDays ?? DEFAULT_SELLER_SIDE_REMINDER_LEAD_DAYS };
+  }
+
+  /** Seller-side selections used to open escrow: preferred escrow/title company, seller-agent commission, home warranty, NHD. */
+  @Get(':id/seller-side-information')
+  async getSellerSideInformation(@Param('id') id: string) {
+    return this.sellerSideInformationService.findByTransaction(id);
+  }
+
+  @Patch(':id/seller-side-information')
+  async setSellerSideInformation(
+    @Param('id') id: string,
+    @Body() body: SellerSideInformationInput,
+  ) {
+    const tx = await this.transactionsService.findOne(id);
+    if (!tx) throw new NotFoundException('Transaction not found');
+    const result = await this.sellerSideInformationService.upsert(id, body);
+    if (result.hadChanges) {
+      await this.auditLogService.log({
+        action: AuditAction.SELLER_SIDE_INFO_UPDATED,
+        targetType: 'transaction',
+        targetId: id,
+        targetDisplayName: tx.transactionNumber,
+        description: `Seller-side information updated for transaction ${tx.transactionNumber}`,
+        details: { transactionId: id, changedFields: result.changedFields },
+      });
+    }
+    return result.entity;
+  }
+
+  /** Sends the Escrow Opening email to the escrow company (idempotent). Activates the ESCROW stage on success. */
+  @Post(':id/escrow-opening-email')
+  @HttpCode(HttpStatus.OK)
+  async sendEscrowOpeningEmail(@Param('id') id: string) {
+    const recipients = await this.escrowOpeningEmailService.sendEscrowOpeningEmail(id);
+    if (recipients.length > 0) {
+      await this.stageInstancesService.activateStage(id, TransactionStage.ESCROW);
+    }
+    return { sent: recipients.length > 0, recipients };
   }
 
   @Get(':id/stages')

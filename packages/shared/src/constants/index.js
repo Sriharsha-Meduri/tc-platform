@@ -12,11 +12,11 @@ exports.GRAPHQL_PATH = '/graphql';
  * sellerSideEnabled: gates the Seller Side option in Create Transaction.
  * While false, the UI shows Seller Side as locked (TransactionSideSelector)
  * and the API refuses to create a Seller Side transaction (see
- * normalizeTransactionSide in document-extraction.controller.ts). Flip to
- * true to unlock — the existing Seller Side workflow is otherwise untouched.
+ * normalizeTransactionSide in document-extraction.controller.ts). Now enabled:
+ * the Listing TC (seller-side) workflow is live.
  */
 exports.TRANSACTION_FEATURES = {
-    sellerSideEnabled: false,
+    sellerSideEnabled: true,
 };
 /**
  * CDA (Commission Disbursement Authorization) generation config — not yet

@@ -38,6 +38,7 @@ export enum AuditAction {
   ESCROW_INFO_UPDATED                 = 'escrow_info_updated',
   HOA_INFO_UPDATED                    = 'hoa_info_updated',
   BUYER_SIDE_INFO_UPDATED             = 'buyer_side_info_updated',
+  SELLER_SIDE_INFO_UPDATED            = 'seller_side_info_updated',
   ESCROW_WELCOME_EMAIL_SENT            = 'escrow_welcome_email_sent',
   ESCROW_DOCUMENT_DELIVERY_PREFERENCE_UPDATED = 'escrow_document_delivery_preference_updated',
   ESCROW_NUMBER_UPDATED                = 'escrow_number_updated',
@@ -91,6 +92,14 @@ export enum AuditAction {
   ESCROW_DOCUMENT_VALIDATION_FAILED = 'escrow_document_validation_failed',
   /** The consolidated reply-email notifying the Escrow Officer of rejected document(s). */
   ESCROW_REJECTION_EMAIL_SENT = 'escrow_rejection_email_sent',
+  /** The seller-side "Escrow Opening" email sent to the escrow company to open escrow, carrying the buyer/seller agent info, commissions, preferred title company, home warranty, and NHD company. Distinct from ESCROW_WELCOME_EMAIL_SENT (the escrow-onboarding welcome). */
+  ESCROW_OPENING_EMAIL_SENT = 'escrow_opening_email_sent',
+  /** A Notice to Perform (NTP) prompt was sent to the Listing TC after a contingency deadline passed without removal. */
+  NOTICE_TO_PERFORM_REMINDER_SENT = 'notice_to_perform_reminder_sent',
+  /** The Listing TC marked the seller disclosure packet reviewed for completeness. */
+  DISCLOSURE_PACKET_REVIEWED = 'disclosure_packet_reviewed',
+  /** The reviewed seller disclosure packet was forwarded to the Buyer TC and Buyer Agent. */
+  DISCLOSURES_FORWARDED_TO_BUYER = 'disclosures_forwarded_to_buyer',
 }
 
 export const USER_CATEGORY_ACTIONS = [
@@ -128,6 +137,7 @@ export const TRANSACTION_CATEGORY_ACTIONS = [
   AuditAction.ESCROW_INFO_UPDATED,
   AuditAction.HOA_INFO_UPDATED,
   AuditAction.BUYER_SIDE_INFO_UPDATED,
+  AuditAction.SELLER_SIDE_INFO_UPDATED,
   AuditAction.ESCROW_WELCOME_EMAIL_SENT,
   AuditAction.ESCROW_DOCUMENT_DELIVERY_PREFERENCE_UPDATED,
   AuditAction.ESCROW_NUMBER_UPDATED,
@@ -157,6 +167,10 @@ export const TRANSACTION_CATEGORY_ACTIONS = [
   AuditAction.SIGNED_VP_AVAILABLE_EMAIL_SENT,
   AuditAction.ESCROW_DOCUMENT_VALIDATION_FAILED,
   AuditAction.ESCROW_REJECTION_EMAIL_SENT,
+  AuditAction.ESCROW_OPENING_EMAIL_SENT,
+  AuditAction.NOTICE_TO_PERFORM_REMINDER_SENT,
+  AuditAction.DISCLOSURE_PACKET_REVIEWED,
+  AuditAction.DISCLOSURES_FORWARDED_TO_BUYER,
 ];
 registerEnumType(AuditAction, { name: 'AuditAction' });
 

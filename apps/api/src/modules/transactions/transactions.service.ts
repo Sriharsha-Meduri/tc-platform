@@ -1,11 +1,13 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindManyOptions, Not, ArrayContains, In, ILike } from 'typeorm';
+import { TRANSACTION_FEATURES } from '@tc/shared';
 import {
   TransactionEntity,
   TransactionStatus,
   TransactionType,
   TransactionSide,
+  CoordinatorSide,
 } from './entities/transaction.entity';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { UpdateTransactionInput } from './dto/update-transaction.input';
@@ -217,6 +219,7 @@ export class TransactionsService {
       transactionNumber: dto.transactionNumber,
       transactionType: dto.transactionType,
       side: dto.side,
+      transactionSide: this.resolveCoordinatorSide(dto.transactionSide),
       propertyAddressLine1: dto.propertyAddressLine1,
       propertyCity: dto.propertyCity,
       propertyState: dto.propertyState,
@@ -225,6 +228,23 @@ export class TransactionsService {
       contractPrice: dto.contractPrice ?? null,
     });
     return this.transactionsRepo.save(tx);
+  }
+
+  /**
+   * Normalizes the coordinator side for persistence. Omitted/null stays null
+   * (treated as BUYER at the application layer). SELLER is only honored while
+   * the seller-side feature is enabled, mirroring the lock enforced on the
+   * document-extraction create path.
+   */
+  private resolveCoordinatorSide(value?: CoordinatorSide | null): CoordinatorSide | null {
+    if (value === CoordinatorSide.SELLER) {
+      if (!TRANSACTION_FEATURES.sellerSideEnabled) {
+        throw new ForbiddenException('Seller Side Transaction is not yet available.');
+      }
+      return CoordinatorSide.SELLER;
+    }
+    if (value === CoordinatorSide.BUYER) return CoordinatorSide.BUYER;
+    return null;
   }
 
   /**
@@ -238,6 +258,9 @@ export class TransactionsService {
   async update(id: string, dto: UpdateTransactionInput): Promise<TransactionEntity> {
     const tx = await this.findOne(id);
     const contractPriceChanged = dto.contractPrice !== undefined && dto.contractPrice !== tx.contractPrice;
+    if (dto.transactionSide !== undefined) {
+      dto.transactionSide = this.resolveCoordinatorSide(dto.transactionSide) ?? undefined;
+    }
     Object.assign(tx, dto);
     const saved = await this.transactionsRepo.save(tx);
     if (contractPriceChanged) {

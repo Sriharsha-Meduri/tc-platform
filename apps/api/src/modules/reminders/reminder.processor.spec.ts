@@ -59,6 +59,7 @@ function buildProcessor(overrides: {
   };
   const vpRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
   const sellerSideRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
+  const ntpRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
   const uploadLinkRepo = {
     findById: jest.fn().mockResolvedValue(null),
     regenerate: jest.fn(),
@@ -73,6 +74,7 @@ function buildProcessor(overrides: {
     contingencyRemindersRepo as never,
     vpRemindersRepo as never,
     sellerSideRemindersRepo as never,
+    ntpRemindersRepo as never,
     messagesRepo as never,
     documentsRepo as never,
     uploadLinkRepo as never,
@@ -220,6 +222,7 @@ function buildVpProcessor(overrides: {
     ),
   };
   const sellerSideRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
+  const ntpRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
   const auditLogService = { log: jest.fn().mockResolvedValue(undefined) };
 
   const processor = new ReminderProcessor(
@@ -230,6 +233,7 @@ function buildVpProcessor(overrides: {
     contingencyRemindersRepo as never,
     vpRemindersRepo as never,
     sellerSideRemindersRepo as never,
+    ntpRemindersRepo as never,
     messagesRepo as never,
     documentsRepo as never,
     uploadLinkRepo as never,
@@ -348,6 +352,7 @@ function buildSellerSideProcessor(overrides: {
     ),
     update: jest.fn().mockResolvedValue(undefined),
   };
+  const ntpRemindersRepo = { findOne: jest.fn(), update: jest.fn() };
   const messagesRepo = {
     save: jest.fn().mockResolvedValue(undefined),
     create: jest.fn().mockImplementation((v: unknown) => v),
@@ -374,6 +379,7 @@ function buildSellerSideProcessor(overrides: {
     contingencyRemindersRepo as never,
     vpRemindersRepo as never,
     sellerSideRemindersRepo as never,
+    ntpRemindersRepo as never,
     messagesRepo as never,
     documentsRepo as never,
     uploadLinkRepo as never,

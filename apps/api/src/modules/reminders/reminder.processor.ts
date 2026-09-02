@@ -12,10 +12,11 @@ import { CustomReminderEntity, CustomReminderStatus } from './entities/custom-re
 import { ContingencyRemovalReminderEntity, ContingencyRemovalReminderStatus, ContingencyType } from './entities/contingency-removal-reminder.entity';
 import { VerificationOfPropertyReminderEntity, VerificationOfPropertyReminderStatus } from './entities/verification-of-property-reminder.entity';
 import { SellerSideDocumentReminderEntity, SellerSideDocumentReminderStatus } from './entities/seller-side-document-reminder.entity';
+import { NoticeToPerformReminderEntity, NoticeToPerformReminderStatus } from './entities/notice-to-perform-reminder.entity';
 import { TransactionMessageEntity, MessageChannel, MessageDirection, MessageStatus } from '../transaction-messages/entities/transaction-message.entity';
 import { TransactionDocumentEntity } from '../transaction-documents/entities/transaction-document.entity';
 import { UploadLinkRepository } from '../upload-links/upload-link.repository';
-import { DEADLINE_REMINDER_QUEUE, DeadlineReminderJobData, OffsetReminderJobData, CustomReminderJobData, ContingencyRemovalReminderJobData, VerificationOfPropertyReminderJobData, SellerSideDocumentReminderJobData } from './reminder.constants';
+import { DEADLINE_REMINDER_QUEUE, DeadlineReminderJobData, OffsetReminderJobData, CustomReminderJobData, ContingencyRemovalReminderJobData, VerificationOfPropertyReminderJobData, SellerSideDocumentReminderJobData, NoticeToPerformReminderJobData } from './reminder.constants';
 
 /** Event types that map to contingency stages where CR-B forms are required. */
 const CONTINGENCY_EVENT_TYPES = new Set(['INSPECTION', 'APPRAISAL', 'LOAN_COMMITMENT']);
@@ -45,6 +46,9 @@ export class ReminderProcessor {
     @InjectRepository(SellerSideDocumentReminderEntity)
     private readonly sellerSideRemindersRepo: Repository<SellerSideDocumentReminderEntity>,
 
+    @InjectRepository(NoticeToPerformReminderEntity)
+    private readonly ntpRemindersRepo: Repository<NoticeToPerformReminderEntity>,
+
     @InjectRepository(TransactionMessageEntity)
     private readonly messagesRepo: Repository<TransactionMessageEntity>,
 
@@ -68,8 +72,103 @@ export class ReminderProcessor {
       await this.handleVerificationOfPropertyReminder(data, jobId);
     } else if (data.reminderType === 'seller_side_document') {
       await this.handleSellerSideDocumentReminder(data, jobId);
+    } else if (data.reminderType === 'notice_to_perform') {
+      await this.handleNoticeToPerformReminder(data, jobId);
     } else {
       await this.handleOffsetReminder(data, jobId);
+    }
+  }
+
+  /**
+   * Notice to Perform (NTP) prompt to the Listing TC. Fires NTP-days after a
+   * contingency deadline. Skips if the contingency was satisfied (a validated
+   * CR-B) since scheduling, so the TC is never prompted about a removed
+   * contingency.
+   */
+  private async handleNoticeToPerformReminder(data: NoticeToPerformReminderJobData, jobId: string): Promise<void> {
+    this.logger.log(`Processing NTP reminder job ${jobId}: ${data.contingencyLabel} for ${data.transactionNumber}`);
+
+    const reminder = await this.ntpRemindersRepo.findOne({ where: { bullJobId: jobId } });
+    if (!reminder) {
+      this.logger.warn(`No DB record for NTP reminder job ${jobId} — skipping (orphaned job)`);
+      return;
+    }
+    if (reminder.status !== NoticeToPerformReminderStatus.SCHEDULED) {
+      this.logger.log(`NTP reminder ${jobId} is ${reminder.status} — skipping email send`);
+      return;
+    }
+
+    if (await this.isContingencyAlreadySatisfied(data.transactionId, data.contingencyType)) {
+      this.logger.log(`NTP reminder ${jobId} skipped — ${data.contingencyType} contingency already satisfied by a validated CR-B`);
+      await this.ntpRemindersRepo.update(reminder.id, {
+        status: NoticeToPerformReminderStatus.SKIPPED,
+        cancelledReason: 'Contingency already satisfied by a validated CR-B at fire time',
+        cancelledAt: new Date(),
+      });
+      return;
+    }
+
+    const deadlineDisplay = new Date(data.deadline).toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    });
+    const subject = `Action needed: consider a Notice to Perform — ${data.propertyAddress}`;
+    const ctx = {
+      recipientName: data.recipientName,
+      propertyAddress: data.propertyAddress,
+      contingencyLabel: data.contingencyLabel,
+      deadlineDisplay,
+      ntpDays: data.ntpDays,
+      transactionNumber: data.transactionNumber,
+    };
+
+    const htmlBody = this.emailTemplateService.render('notice-to-perform-reminder.html.hbs', ctx);
+    const textBody = this.emailTemplateService.render('notice-to-perform-reminder.text.hbs', ctx);
+
+    try {
+      const mailResult = await this.mailgunService.sendEmail(
+        data.recipientEmail, subject, htmlBody, textBody, data.fromAddress,
+      );
+
+      await this.messagesRepo.save(
+        this.messagesRepo.create({
+          transactionId: data.transactionId,
+          channel: MessageChannel.EMAIL,
+          direction: MessageDirection.OUTBOUND,
+          status: MessageStatus.SENT,
+          subject,
+          bodyText: textBody,
+          bodyHtml: htmlBody,
+          providerName: 'mailgun',
+          providerMessageId: mailResult?.messageId ?? null,
+          stage: data.transactionStage,
+          sentAt: new Date(),
+          metadataJson: {
+            to: data.recipientEmail,
+            type: 'notice_to_perform_reminder',
+            contingencyType: data.contingencyType,
+            transactionEventId: data.transactionEventId,
+          },
+        }),
+      );
+
+      await this.ntpRemindersRepo.update(reminder.id, {
+        status: NoticeToPerformReminderStatus.SENT,
+        sentAt: new Date(),
+      });
+
+      await this.auditLogService.log({
+        accountId: null,
+        action: AuditAction.NOTICE_TO_PERFORM_REMINDER_SENT,
+        targetType: 'transaction',
+        targetId: data.transactionId,
+        targetDisplayName: data.transactionNumber,
+        description: `Notice to Perform prompt sent to the Listing TC for the ${data.contingencyLabel} on transaction ${data.transactionNumber}`,
+        details: { transactionId: data.transactionId, contingencyType: data.contingencyType, to: data.recipientEmail },
+      });
+
+      this.logger.log(`NTP reminder sent to ${data.recipientEmail} for ${data.contingencyType} — job ${jobId}`);
+    } catch (err) {
+      this.logger.error(`Failed to send NTP reminder for job ${jobId}: ${(err as Error).message}`);
     }
   }
 

@@ -8,11 +8,13 @@ import { ReminderSchedulerService } from './reminder-scheduler.service';
 import { ContingencyRemovalReminderSchedulerService } from './contingency-removal-reminder-scheduler.service';
 import { VerificationOfPropertyReminderSchedulerService } from './verification-of-property-reminder-scheduler.service';
 import { SellerSideDocumentReminderSchedulerService } from './seller-side-document-reminder-scheduler.service';
+import { NoticeToPerformReminderSchedulerService } from './notice-to-perform-reminder-scheduler.service';
 import { TransactionEventReminderEntity } from './entities/transaction-event-reminder.entity';
 import { CustomReminderEntity } from './entities/custom-reminder.entity';
 import { ContingencyRemovalReminderEntity } from './entities/contingency-removal-reminder.entity';
 import { VerificationOfPropertyReminderEntity } from './entities/verification-of-property-reminder.entity';
 import { SellerSideDocumentReminderEntity } from './entities/seller-side-document-reminder.entity';
+import { NoticeToPerformReminderEntity } from './entities/notice-to-perform-reminder.entity';
 import { TransactionEntity } from '../transactions/entities/transaction.entity';
 import { TransactionPartyEntity } from '../transaction-parties/entities/transaction-party.entity';
 import { TransactionMessageEntity } from '../transaction-messages/entities/transaction-message.entity';
@@ -34,6 +36,7 @@ import { TransactionFormTemplatesModule } from '../transaction-form-templates/tr
       ContingencyRemovalReminderEntity,
       VerificationOfPropertyReminderEntity,
       SellerSideDocumentReminderEntity,
+      NoticeToPerformReminderEntity,
       TransactionEntity,
       TransactionPartyEntity,
       TransactionMessageEntity,
@@ -57,6 +60,7 @@ import { TransactionFormTemplatesModule } from '../transaction-form-templates/tr
     ContingencyRemovalReminderSchedulerService,
     VerificationOfPropertyReminderSchedulerService,
     SellerSideDocumentReminderSchedulerService,
+    NoticeToPerformReminderSchedulerService,
     // UploadLinkRepository has no dependency on UploadLinksModule's own providers — just the
     // UploadLinkEntity repo already registered above — so it can be provided here directly,
     // giving the reminder processor a way to regenerate a link's token without ReminderModule
@@ -69,6 +73,7 @@ import { TransactionFormTemplatesModule } from '../transaction-form-templates/tr
     ContingencyRemovalReminderSchedulerService,
     VerificationOfPropertyReminderSchedulerService,
     SellerSideDocumentReminderSchedulerService,
+    NoticeToPerformReminderSchedulerService,
   ],
 })
 export class ReminderModule {}
