@@ -62,7 +62,7 @@ export class EscrowOpeningEmailService {
   ) {}
 
   /**
-   * Sends the Escrow Opening email. Idempotent — a second call after a
+   * Sends the Escrow Opening email. Idempotent: a second call after a
    * successful send is a no-op. Throws UnprocessableEntityException when no
    * valid escrow-company recipient is on file (escrow cannot be opened without
    * one). Returns the list of recipient emails actually sent to.
@@ -91,7 +91,7 @@ export class EscrowOpeningEmailService {
     const sellerAgent = parties.find((p) => p.partyRole === PartyRole.SELLER_AGENT) ?? null;
     const sellerTc = parties.find((p) => p.partyRole === PartyRole.SELLER_TRANSACTION_COORDINATOR) ?? null;
 
-    // The escrow company is the To recipient — escrow_information.escrowEmail is
+    // The escrow company is the To recipient. escrow_information.escrowEmail is
     // the authoritative address, with the Escrow Officer party as a fallback.
     const escrowEmail = isValidEmail(escrow?.escrowEmail)
       ? escrow!.escrowEmail!
@@ -102,7 +102,7 @@ export class EscrowOpeningEmailService {
     if (!escrowEmail) {
       throw new UnprocessableEntityException({
         code: 'ESCROW_OPENING_EMAIL_MISSING_ESCROW_RECIPIENT',
-        message: 'Cannot send the Escrow Opening email — no valid escrow company email address is on file.',
+        message: 'Cannot send the Escrow Opening email. No valid escrow company email address is on file.',
       });
     }
 
@@ -183,7 +183,7 @@ export class EscrowOpeningEmailService {
         details: { to: [escrowEmail], cc, status: 'sent', providerMessageId: mailResult?.messageId ?? null },
       });
 
-      this.logger.log(`Escrow Opening email sent for transaction ${tx.transactionNumber} — to: ${escrowEmail}; cc: ${cc.join(', ') || 'none'}`);
+      this.logger.log(`Escrow Opening email sent for transaction ${tx.transactionNumber}; to: ${escrowEmail}; cc: ${cc.join(', ') || 'none'}`);
       return [escrowEmail, ...cc];
     } catch (err) {
       const message = (err as Error).message;

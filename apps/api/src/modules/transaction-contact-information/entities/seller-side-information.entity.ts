@@ -6,7 +6,7 @@ import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
 import { TransactionEntity } from '../../transactions/entities/transaction.entity';
 
 /**
- * One row per transaction — the seller-side selections a Listing TC captures to
+ * One row per transaction: the seller-side selections a Listing TC captures to
  * open escrow and drive the Escrow Opening email: the seller agent's preferred
  * escrow and title companies, the seller agent commission, the home warranty
  * company (and who pays for it), and the NHD company. Mirrors

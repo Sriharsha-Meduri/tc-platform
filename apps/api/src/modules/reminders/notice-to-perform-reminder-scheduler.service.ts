@@ -35,7 +35,7 @@ const CONTINGENCY_LABELS: Record<ContingencyType, string> = {
 /**
  * Schedules a Notice to Perform (NTP) prompt to the Listing TC for each
  * contingency that could still go unremoved. Fires NTP-days AFTER the deadline.
- * Seller-side only — the caller (EventSeederService) gates on transactionSide.
+ * Seller-side only: this scheduler no-ops for buyer-side and legacy transactions.
  * Mirrors ContingencyRemovalReminderSchedulerService: idempotent insert keyed
  * by a unique bull_job_id, reschedules on deadline change, cancels when waived.
  */
@@ -77,7 +77,7 @@ export class NoticeToPerformReminderSchedulerService {
 
     const recipientEmail = this.resolveListingTcEmail(tx, parties);
     if (!recipientEmail) {
-      this.logger.debug(`NTP scheduler: no valid Listing TC email for tx ${tx.transactionNumber} — skipping`);
+      this.logger.debug(`NTP scheduler: no valid Listing TC email for tx ${tx.transactionNumber}, skipping`);
       return;
     }
 
@@ -101,11 +101,11 @@ export class NoticeToPerformReminderSchedulerService {
         where: { transactionId, contingencyType, status: NoticeToPerformReminderStatus.SCHEDULED },
       });
       if (existing && existing.fireAt.getTime() === fireAt.getTime()) continue;
-      if (existing) await this.cancelRow(existing, 'Negotiated deadline changed — rescheduling');
+      if (existing) await this.cancelRow(existing, 'Negotiated deadline changed, rescheduling');
 
       const delayMs = fireAt.getTime() - now;
       if (delayMs <= 0) {
-        this.logger.debug(`NTP fire time already passed for ${contingencyType} on tx ${tx.transactionNumber} — skipping`);
+        this.logger.debug(`NTP fire time already passed for ${contingencyType} on tx ${tx.transactionNumber}, skipping`);
         continue;
       }
 
@@ -145,7 +145,7 @@ export class NoticeToPerformReminderSchedulerService {
 
       try {
         await this.reminderQueue.add(jobData, { delay: delayMs, jobId, removeOnComplete: true, removeOnFail: 50 });
-        this.logger.log(`Scheduled NTP prompt for ${contingencyType} on tx ${tx.transactionNumber} — fires ${fireAt.toISOString()}`);
+        this.logger.log(`Scheduled NTP prompt for ${contingencyType} on tx ${tx.transactionNumber}, fires ${fireAt.toISOString()}`);
       } catch (err) {
         this.logger.error(`Failed to enqueue NTP job ${jobId}: ${(err as Error).message}`);
       }

@@ -120,7 +120,7 @@ export class DisclosurePacketService {
     if (recipients.length === 0) {
       throw new UnprocessableEntityException({
         code: 'DISCLOSURE_FORWARD_MISSING_BUYER_RECIPIENT',
-        message: 'Cannot forward disclosures — no valid Buyer TC or Buyer Agent email is on file.',
+        message: 'Cannot forward disclosures. No valid Buyer TC or Buyer Agent email is on file.',
       });
     }
 

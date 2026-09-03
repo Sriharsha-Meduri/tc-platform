@@ -135,7 +135,7 @@ export interface SellerSideDocumentReminderJobData {
  * contingency deadline passes without the contingency being removed. Unlike the
  * contingency-removal reminder (which nudges the Buyer Agent before the
  * deadline), this prompts the Listing TC directly to consider issuing an NTP.
- * Sent to the TC's own email — no upload link involved.
+ * Sent to the TC's own email; no upload link involved.
  */
 export interface NoticeToPerformReminderJobData {
   reminderType: 'notice_to_perform';
