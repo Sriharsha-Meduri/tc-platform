@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { getSession } from '@/lib/auth-actions';
 import StagedSwimlane from './StagedSwimlane';
 import SimplifiedSwimlane from './SimplifiedSwimlane';
+import SellerSidePanel from './SellerSidePanel';
 import InitWorkflowPanel from './InitWorkflowPanel';
 import BrokerDocumentView from './BrokerDocumentView';
 import { DISCLOSURE_FORM_CODES } from './DisclosureCatalog';
@@ -194,6 +195,11 @@ export default async function TransactionPage({ params, searchParams }: Props) {
           transactionId={id}
           offerAcceptedAt={transaction.offerAcceptedAt}
         />
+      )}
+
+      {/* Seller-side coordination: escrow opening + disclosure packet */}
+      {!isBroker && transaction.transactionSide === 'SELLER' && (
+        <SellerSidePanel transactionId={id} />
       )}
 
       {/* Broker view — simplified document list only */}
